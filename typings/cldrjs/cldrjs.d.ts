@@ -1,43 +1,17 @@
-// TODO: jsdoc?
+declare module 'cldrjs' {
+	import Cldr = require('cldr');
+	export = Cldr;
+}
 
-declare module 'cldrjs/cldr' {
-	// from 'cldrjs/cldr/event'
-	export class EventEmitter {
-		protected _onceReturnValue: any;
+declare module 'cldr' {
+	import CldrEvent = require('cldr/event');
 
-		protected _getEvents(): Object;
-		protected _getOnceReturnValue(): any;
-
-		addListener(event: string | RegExp, listener: Function): EventEmitter;
-		addListeners(event: string | RegExp, listeners: Function[]): EventEmitter;
-		addOnceListener(event: string | RegExp, listener: Function): EventEmitter;
-		defineEvent(event: string): EventEmitter;
-		defineEvents(event: string[]): EventEmitter;
-		emit(event: string | RegExp, ...args: any[]): EventEmitter;
-		emitEvent(event: string | RegExp, args: any[]): EventEmitter;
-		flattenListeners(listeners: Object[]): Function[];
-		getListeners(event: string | RegExp): Function[] | Object;
-		getListenersAsObject(event: string | RegExp): Object;
-		manipulateListeners(remove: Boolean, event: string | Object | RegExp, listeners: Function[]): EventEmitter;
-		noConflict(): EventEmitter;
-		off(event: string | RegExp, listener: Function): EventEmitter;
-		on(event: string | RegExp, listener: Function): EventEmitter;
-		once(event: string | RegExp, listener: Function): EventEmitter;
-		removeAllListeners(event: string | RegExp): EventEmitter;
-		removeEvent(event: string | RegExp): EventEmitter;
-		removeListener(event: string | RegExp, listener: Function): EventEmitter;
-		removeListener(event: string | Object | RegExp, listeners: Function[]): EventEmitter;
-		setOnceReturnValue(value: any): EventEmitter;
-		trigger(event: string | RegExp, args: any[]): EventEmitter;
-	}
-
-	export default class Cldr {
+	class Cldr {
 		// from 'cldrjs/cldr/unresolved'
 		protected static _raw: Object;
 
 		static localeSep: string;
 
-		// TODO: should this be generic, or just use 'any'?
 		protected _alwaysArray<T>(arg: T | T[]): T[];
 		protected _coreLoad(Cldr: Cldr, source: Object, cldrData: Object): Object;
 		protected _createError(code: string, attributes: Object): Error;
@@ -68,7 +42,7 @@ declare module 'cldrjs/cldr' {
 		protected _resolved: Object;
 
 		// from 'cldrjs/cldr/event'
-		ee: EventEmitter;
+		ee: CldrEvent.EventEmitter;
 		locale: string;
 
 		constructor(locale: string);
@@ -77,4 +51,49 @@ declare module 'cldrjs/cldr' {
 		init(locale: string): void;
 		main(path: string | string[]): string;
 	}
+
+	export = Cldr;
+}
+
+declare module 'cldr/event' {
+	import Cldr = require('cldrjs');
+
+	module Cldr {
+		// from 'cldrjs/cldr/event'
+		export interface EventEmitter {
+			addListener(event: string | RegExp, listener: Function): EventEmitter;
+			addListeners(event: string | RegExp, listeners: Function[]): EventEmitter;
+			addOnceListener(event: string | RegExp, listener: Function): EventEmitter;
+			defineEvent(event: string): EventEmitter;
+			defineEvents(event: string[]): EventEmitter;
+			emit(event: string | RegExp, ...args: any[]): EventEmitter;
+			emitEvent(event: string | RegExp, args: any[]): EventEmitter;
+			flattenListeners(listeners: Object[]): Function[];
+			getListeners(event: string | RegExp): Function[] | Object;
+			getListenersAsObject(event: string | RegExp): Object;
+			manipulateListeners(remove: Boolean, event: string | Object | RegExp, listeners: Function[]): EventEmitter;
+			noConflict(): EventEmitter;
+			off(event: string | RegExp, listener: Function): EventEmitter;
+			on(event: string | RegExp, listener: Function): EventEmitter;
+			once(event: string | RegExp, listener: Function): EventEmitter;
+			removeAllListeners(event: string | RegExp): EventEmitter;
+			removeEvent(event: string | RegExp): EventEmitter;
+			removeListener(event: string | RegExp, listener: Function): EventEmitter;
+			removeListener(event: string | Object | RegExp, listeners: Function[]): EventEmitter;
+			setOnceReturnValue(value: any): EventEmitter;
+			trigger(event: string | RegExp, args: any[]): EventEmitter;
+		}
+	}
+
+	export = Cldr;
+}
+
+declare module 'cldr/supplemental' {
+	import Cldr = require('cldrjs');
+	export = Cldr;
+}
+
+declare module 'cldr/unresolved' {
+	import Cldr = require('cldrjs');
+	export = Cldr;
 }
