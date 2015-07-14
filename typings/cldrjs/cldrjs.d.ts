@@ -7,7 +7,9 @@ declare module 'cldr' {
 	import CldrEvent = require('cldr/event');
 
 	class Cldr {
-		// from 'cldrjs/cldr/unresolved'
+		/**
+		 * @requires cldr/unresolved
+		 */
 		protected static _raw: Object;
 
 		static localeSep: string;
@@ -25,15 +27,26 @@ declare module 'cldr' {
 		protected _validateTypePath(value: any, name: string): void;
 		protected _validateTypePlainObject(value: any, name: string): void;
 
-		// from 'cldrjs/cldr/event'
+		/**
+		 * @requires 'cldr/event'
+		 */
 		protected static _eventInit(): void;
 
 		static load(...cldrData: Object[]): void;
-		// from 'cldrjs/cldr/event'
+
+		/**
+		 * @requires 'cldr/event'
+		 */
 		static off(event: string | RegExp, listener: Function): void;
-		// from 'cldrjs/cldr/event'
+
+		/**
+		 * @requires 'cldr/event'
+		 */
 		static on(event: string | RegExp, listener: Function): void;
-		// from 'cldrjs/cldr/event'
+
+		/**
+		 * @requires 'cldr/event'
+		 */
 		static once(event: string | RegExp, listener: Function): void;
 
 		protected _availableBundleMap: Object;
@@ -41,8 +54,11 @@ declare module 'cldr' {
 		protected _availableBundleMapQueue: string[];
 		protected _resolved: Object;
 
-		// from 'cldrjs/cldr/event'
+		/**
+		 * @requires 'cldr/event'
+		 */
 		ee: CldrEvent.EventEmitter;
+
 		locale: string;
 
 		constructor(locale: string);
