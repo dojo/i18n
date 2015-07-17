@@ -1,5 +1,3 @@
-// TODO: are convenience methods (e.g. formatCurrency) also static?
-
 /// <reference path="../cldrjs/cldrjs.d.ts" />
 
 declare module 'globalize' {
@@ -89,6 +87,32 @@ declare module 'globalize' {
 		 * @requires globalize/date
 		 */
 		static dateParser(value: string): Date;
+
+		/**
+		 * @requires globalize/currency
+		 */
+		static formatCurrency(value: number, currencyCode: string, options?: CurrencyOptions): string;
+
+		/**
+		 * @requires globalize/date
+		 */
+		static formatDate(value: Date, options?: DateOptions): string;
+
+		/**
+		 * @requires globalize/date
+		 */
+		static formatMessage(path: string | string[], variables?: string | string[] | Object): string;
+		static formatMessage(path: string | string[], ...variables: string[]): string;
+
+		/**
+		 * @requires globalize/number
+		 */
+		static formatNumber(value: number, options?: NumberOptions): string;
+
+		/**
+		 * @requires globalize/relative-time
+		 */
+		static formatRelativeTime(value: number, unit: string, options?: TimeOptions): string;
 
 		static load(...cldrData: Object[]): void;
 

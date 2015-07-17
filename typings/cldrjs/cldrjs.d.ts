@@ -20,8 +20,7 @@ declare module 'cldr' {
 		protected _itemGetResolved(Cldr: Cldr, path: string | string[], attributes: Object): Object;
 		protected _jsonMerge(...objects: Object[]): Object;
 		protected _pathNormalize(path: string | string[], attributes: Object): string[];
-		// TODO: does this always resolve to a string, or maybe an object?
-		protected _resourceGet(data: Object, path: string): string;
+		protected _resourceGet(data: Object, path: string): string | Object;
 		protected _validatePresence(value: any, name: string): void;
 		protected _validateType(value: any, name: string, check: Boolean, expected: string): void;
 		protected _validateTypePath(value: any, name: string): void;
@@ -50,7 +49,6 @@ declare module 'cldr' {
 		static once(event: string | RegExp, listener: Function): void;
 
 		protected _availableBundleMap: Object;
-		// TODO: verify always string
 		protected _availableBundleMapQueue: string[];
 		protected _resolved: Object;
 
@@ -62,7 +60,6 @@ declare module 'cldr' {
 		locale: string;
 
 		constructor(locale: string);
-		// TODO: does this always resolve to a string, or maybe an object?
 		get(path: string | string[]): string;
 		init(locale: string): void;
 		main(path: string | string[]): string;
