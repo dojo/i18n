@@ -1,6 +1,6 @@
 /// <reference path="../cldrjs/cldrjs.d.ts" />
 
-declare module 'Globalize' {
+declare module 'globalize' {
 	import Cldr = require('cldr');
 
 	export interface CurrencyFormatter {
