@@ -30,8 +30,10 @@ declare module 'globalize' {
 
 		export interface MessageFormatter {
 			(variables: string | string[] | Object): string;
-			(...variables: string[]): string;
+			(...variables: Array<string | Object>): string;
 		}
+
+		export type MessagePath = string | string[] | number | { [key:string]: any }
 
 		export interface NumberFormatter {
 			(value: number): string;
@@ -88,7 +90,7 @@ declare module 'globalize' {
 		/**
 		 * @requires globalize/date
 		 */
-		static dateParser(value: string): Date;
+		static dateParser(options: Globalize.DateOptions): Globalize.DateParser;
 
 		/**
 		 * @requires globalize/currency
@@ -103,8 +105,8 @@ declare module 'globalize' {
 		/**
 		 * @requires globalize/date
 		 */
-		static formatMessage(path: string | string[], variables?: string | string[] | Object): string;
-		static formatMessage(path: string | string[], ...variables: string[]): string;
+		static formatMessage(path: Globalize.MessagePath, variables?: string | string[] | Object): string;
+		static formatMessage(path: Globalize.MessagePath, ...variables: string[]): string;
 
 		/**
 		 * @requires globalize/number
@@ -139,6 +141,21 @@ declare module 'globalize' {
 		 * @requires globalize/number
 		 */
 		static numberParser(options: Globalize.NumberParserOptions): Globalize.NumberParser;
+
+		/**
+		 * @requires globalize/date
+		 */
+		static parseDate(value: string, options?: Globalize.DateOptions): Date;
+
+		/**
+		 * @requires globalize/number
+		 */
+		static parseNumber(value: string, options?: Globalize.NumberParserOptions): number;
+
+		/**
+		 * @requires globalize/plural
+		 */
+		static plural(value: number, options?: Globalize.PluralOptions): string;
 
 		/**
 		 * @requires globalize/plural
@@ -181,8 +198,8 @@ declare module 'globalize' {
 		/**
 		 * @requires globalize/date
 		 */
-		formatMessage(path: string | string[], variables?: string | string[] | Object): string;
-		formatMessage(path: string | string[], ...variables: string[]): string;
+		formatMessage(path: Globalize.MessagePath, variables?: string | string[] | Object): string;
+		formatMessage(path: Globalize.MessagePath, ...variables: string[]): string;
 
 		/**
 		 * @requires globalize/number
