@@ -128,26 +128,28 @@ module.exports = function (grunt) {
 			}
 		},
 
+
 		intern: {
 			options: {
 				runType: 'runner',
-				config: '<%= devDirectory %>/tests/intern'
+				config: '<%= devDirectory %>/tests/intern',
+				reporters: [ 'Runner' ]
 			},
-			runner: {
+			browserstack: {},
+			saucelabs: {
 				options: {
-					reporters: [ 'runner', 'lcovhtml' ]
+					config: '<%= devDirectory %>/tests/intern-saucelabs'
 				}
 			},
+			remote: {},
 			local: {
 				options: {
-					config: '<%= devDirectory %>/tests/intern-local',
-					reporters: [ 'runner', 'lcovhtml' ]
+					config: '<%= devDirectory %>/tests/intern-local'
 				}
 			},
-			client: {
+			node: {
 				options: {
-					runType: 'client',
-					reporters: [ 'console', 'lcovhtml' ]
+					runType: 'client'
 				}
 			},
 			proxy: {
@@ -298,8 +300,8 @@ module.exports = function (grunt) {
 		'copy:staticFiles',
 		'dtsGenerator:dist'
 	]);
-	grunt.registerTask('test', [ 'dev', 'intern:client' ]);
-	grunt.registerTask('test-runner', [ 'dev', 'intern:runner' ]);
+	grunt.registerTask('test', [ 'dev', 'intern:node' ]);
+	grunt.registerTask('test-runner', [ 'dev', 'intern:remote' ]);
 	grunt.registerTask('test-local', [ 'dev', 'intern:local' ]);
 	grunt.registerTask('test-proxy', [ 'dev', 'intern:proxy' ]);
 	grunt.registerTask('ci', [ 'tslint', 'test' ]);
