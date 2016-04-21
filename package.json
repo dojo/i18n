@@ -13,14 +13,14 @@
 		"url": "https://github.com/dojo/i18n.git"
 	},
 	"dependencies": {
-		"dojo-core": "2.0.0-pre",
+		"dojo-core": "2.0.0-alpha.3",
 		"globalize": "1.0.0",
 		"cldrjs": "0.4.1",
 		"cldr-data": "^27.0.0"
 	},
 	"devDependencies": {
 		"dts-generator": "1.4.1",
-		"dojo-loader": "2.0.0-alpha.1",
+		"dojo-loader": "2.0.0-beta.2",
 		"grunt": "0.4.5",
 		"grunt-contrib-clean": "0.6.0",
 		"grunt-contrib-copy": "0.8.0",
@@ -28,8 +28,8 @@
 		"grunt-text-replace": "0.4.0",
 		"grunt-ts": "4.2.0-beta.1",
 		"grunt-tslint": "2.0.0",
-		"tslint": "2.1.1",
-		"intern": "2.2.2",
-		"typescript": "Arnavion/typescript-github#2015-06-15-1f587069da08150d512e95485cccf3f9a8115e06"
+		"tslint": "3.5.0",
+		"intern": "3.0.6",
+		"typescript": "1.8.9"
 	}
 }
