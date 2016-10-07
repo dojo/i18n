@@ -1,2 +1,2 @@
-import './createI18n';
+import './i18n';
 import './main';

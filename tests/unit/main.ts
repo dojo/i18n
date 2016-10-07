@@ -1,11 +1,13 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import i18n, { createI18n } from 'src/main';
+import i18n, { switchLocale, systemLocale } from 'src/main';
 
 registerSuite({
-	name: 'dojo-i18n/main',
+	name: 'main',
 
-	'assert default export'() {
-		assert.instanceOf(i18n, createI18n, 'The default export is an instance of `createI18n`.');
+	i18n() {
+		assert.isFunction(i18n, 'i18n is exported.');
+		assert.isFunction(switchLocale, 'switchLocale is exported.');
+		assert.isString(systemLocale, 'systemLocale is exported.');
 	}
 });
