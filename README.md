@@ -8,27 +8,24 @@ The examples below are provided in TypeScript syntax. The package does work unde
 
 ### Message Bundle Loading
 
-`dojo-i18n` provides a means for loading locale-specific messages, and updating those messages when the locale changes. Each bundle has a default module that is `import`ed like any other TypeScript module. Locale-specific messages are then loaded via the `i18n` method. Every default bundle MUST provide a `baseUrl` that will be used to determine locale bundle locations, a `locales` array of supported locales, and a `messages` map of default messages. For example, suppose the module located at `nls/common.ts` contains the following contents:
+`dojo-i18n` provides a means for loading locale-specific messages, and updating those messages when the locale changes. Each bundle has a default module that is `import`ed like any other TypeScript module. Locale-specific messages are then loaded via the `i18n` method. Every default bundle MUST provide a `bundlePath` that will be used to determine locale bundle locations, a `locales` array of supported locales, and a `messages` map of default messages. For example, suppose the module located at `nls/common.ts` contains the following contents:
 
 ```typescript
-import { Bundle, Messages } from 'dojo-i18n/i18n';
-
-const baseUrl = 'nls/common';
+const bundlePath = 'nls/common';
 const locales = [ 'fr', 'ar', 'ar-JO' ];
 const messages = {
 	hello: 'Hello',
 	goodbye: 'Goodbye'
 };
 
-const bundle = { baseUrl, locales, messages };
-export default bundle as Bundle<Messages>;
+export default { bundlePath, locales, messages };
 ```
 
 There are three things to note about the structure of default bundles. First, the `messages` object contains default messages for all keys used through the bundle. These messages are used as fallbacks for any messages not included in locale-specific bundles.
 
 Second, the `locales` array indicates that the listed locales have corresponding directories underneath the parent directory. In the above example, the fact that "fr" (French) is supported indicates that the default bundle's parent directory also contains a `fr/common.ts` module (which would be represented by the module ID `nls/fr/common`). Alternatively, if the default messages were housed in the module ID `arbitrary/path/numbers.ts`, the corresponding "fr" messages would be expected at `arbitrary/path/fr/numbers.ts`.
 
-Third, the `baseUrl` indicates where the bundle is located, using whichever module path format is understood by the underlying system loader (`global.require`, assumed to be the default `require` in Node, and the [Dojo 2 loader](https://github.com/dojo/loader/) in browser environments). The `baseUrl` is not only required, but also MUST be in the format `{basePath}{separator}{filename}` in order for the i18n system to correctly find locale-specific bundles.
+Third, the `bundlePath` indicates where the bundle is located, using whichever module path format is understood by the underlying system loader (`global.require`, assumed to be the default `require` in Node, and the [Dojo 2 loader](https://github.com/dojo/loader/) in browser environments). The `bundlePath` is not only required, but also MUST be in the format `{basePath}{separator}{filename}` in order for the i18n system to correctly find locale-specific bundles.
 
 Once the default bundle is in place, any locale-specific messages are loaded by passing the default bundle to the `i18n` function. The locale bundles expose their messages on their default exports:
 
@@ -46,7 +43,7 @@ Using the previous example as the default bundle, any locale-specific messages a
 import i18n, { Messages } from 'dojo-i18n/main';
 import bundle from 'nls/common';
 
-i18n(bundle, 'fr').then(function (messages: Messages) {
+i18n<Messages>(bundle, 'fr').then(function (messages: Messages) {
 	console.log(messages.hello); // "Bonjour"
 	console.log(messages.goodbye); // "Au revoir"
 });
@@ -63,7 +60,7 @@ const context = {
 	state: { locale: 'fr' }
 } as LocaleContext;
 
-i18n(bundle, context).then(function (messages: Messages) {
+i18n<Messages>(bundle, context).then(function (messages: Messages) {
 	console.log(messages.hello); // "Bonjour"
 	console.log(messages.goodbye); // "Au revoir"
 });
@@ -84,7 +81,7 @@ import bundle from 'nls/bundle';
 const createCustomWidget = createRenderMixin
 	.mixin({
 		render() {
-			return i18n(bundle, this).then(function (messages: Messages) {
+			return i18n<Messages>(bundle, this).then(function (messages: Messages) {
 				return messages.hello;
 			});
 		}

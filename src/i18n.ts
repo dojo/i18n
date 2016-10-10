@@ -13,7 +13,7 @@ export interface Bundle<T extends Messages> {
 	 * "{basePath}{separator}{filename}". For example, if the module ID for a bundle is "nls/common", the loader will
 	 * look for locale-specific bundles at "nls/{locale}/common".
 	 */
-	readonly baseUrl: string;
+	readonly bundlePath: string;
 
 	/**
 	 * A list of supported locales. Any included locale MUST have an associated bundle.
@@ -271,8 +271,8 @@ function i18n<T extends Messages>(bundle: Bundle<T>, context: LocaleContext<Loca
 function i18n<T extends Messages>(bundle: Bundle<T>, locale: string): Promise<T>;
 function i18n<T extends Messages>(bundle: Bundle<T>, context?: any): Promise<T> {
 	const locale = resolveLocale(context);
-	const { baseUrl, locales, messages } = bundle;
-	const path = baseUrl.replace(/\/$/, '');
+	const { bundlePath, locales, messages } = bundle;
+	const path = bundlePath.replace(/\/$/, '');
 
 	try {
 		validatePath(path);
