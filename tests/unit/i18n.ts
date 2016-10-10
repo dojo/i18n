@@ -3,7 +3,7 @@ import has from 'dojo-core/has';
 import { Handle } from 'dojo-core/interfaces';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import i18n, { Bundle, LocaleContext, Messages, switchLocale, systemLocale } from 'src/i18n';
+import i18n, { Bundle, LocaleContext, LocaleState, Messages, switchLocale, systemLocale } from '../../src/i18n';
 import bundle from '../support/mocks/common/main';
 
 registerSuite({
@@ -64,7 +64,7 @@ registerSuite({
 		},
 
 		'assert context with locale'() {
-			const context: LocaleContext = {
+			const context: LocaleContext<LocaleState> = {
 				state: { locale: 'ar' }
 			};
 
@@ -78,7 +78,7 @@ registerSuite({
 		},
 
 		'assert context without locale'() {
-			const context: LocaleContext = {
+			const context: LocaleContext<LocaleState> = {
 				state: {}
 			};
 

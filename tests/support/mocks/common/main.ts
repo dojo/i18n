@@ -1,5 +1,5 @@
 import has from 'dojo-core/has';
-import { Bundle, Messages } from 'src/i18n';
+import { Bundle, Messages } from '../../../../src/i18n';
 
 const locales = [
 	'ar',

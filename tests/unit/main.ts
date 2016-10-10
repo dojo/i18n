@@ -1,6 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import i18n, { switchLocale, systemLocale } from 'src/main';
+import i18n, { switchLocale, systemLocale } from '../../src/main';
 
 registerSuite({
 	name: 'main',

@@ -13,18 +13,18 @@ export interface Bundle<T extends Messages> {
 	 * "{basePath}{separator}{filename}". For example, if the module ID for a bundle is "nls/common", the loader will
 	 * look for locale-specific bundles at "nls/{locale}/common".
 	 */
-	baseUrl: string;
+	readonly baseUrl: string;
 
 	/**
 	 * A list of supported locales. Any included locale MUST have an associated bundle.
 	 */
-	locales?: string[];
+	readonly locales?: string[];
 
 	/**
 	 * The map of default messages that will be used when locale-specific messages are unavailable.
 	 * Note that any message key used in the i18n system MUST have a default specified here.
 	 */
-	messages: T;
+	readonly messages: T;
 }
 
 interface BundleMap<T extends Messages> {
@@ -35,11 +35,11 @@ interface BundleMap<T extends Messages> {
  * Represents an object from which a locale can be read. If a context object also has both `invalidate` and `own`
  * methods, it will be updated (invalidated) when the locale is changed.
  */
-export interface LocaleContext {
+export interface LocaleContext<S extends LocaleState> {
 	/**
 	 * The state object from which the locale string is read.
 	 */
-	state: { locale?: string };
+	state: S;
 
 	/**
 	 * An optional method to invalidate the context object's state.
@@ -63,6 +63,10 @@ interface LocaleModule<T extends Messages> {
 	default?: T;
 }
 
+export interface LocaleState {
+	locale?: string;
+}
+
 /**
  * An object of keys to locale messages.
  */
@@ -72,7 +76,7 @@ export interface Messages {
 
 const PATH_SEPARATOR: string = has('host-node') ? global.require('path').sep : '/';
 const VALID_PATH_PATTERN = new RegExp(PATH_SEPARATOR + '[^' + PATH_SEPARATOR + ']+$');
-const contextObjects: LocaleContext[] = [];
+const contextObjects: LocaleContext<LocaleState>[] = [];
 let rootLocale: string;
 
 /**
@@ -81,14 +85,14 @@ let rootLocale: string;
  */
 const loadLocaleBundles = (function () {
 	function mapMessages<T extends Messages>(modules: LocaleModule<T>[]): T[] {
-		return modules.map(function (localeModule: LocaleModule<T>): T {
+		return modules.map((localeModule: LocaleModule<T>): T => {
 			return localeModule.default as T;
 		});
 	}
 
 	if (has('host-node')) {
 		return function<T extends Messages>(paths: string[]): Promise<T[]> {
-			const modules = paths.map(function (path: string): LocaleModule<T> {
+			const modules = paths.map((path: string): LocaleModule<T> => {
 				return global.require(path) as LocaleModule<T>;
 			});
 
@@ -97,12 +101,12 @@ const loadLocaleBundles = (function () {
 	}
 
 	return function<T extends Messages>(paths: string[]): Promise<T[]> {
-		return new Promise<T[]>(function (resolve, reject) {
+		return new Promise<T[]>((resolve, reject) => {
 			const require = global.require;
-			require.on('error', function (error: Error) {
+			require.on('error', (error: Error) => {
 				reject(error);
 			});
-			require(paths, function (...modules: LocaleModule<T>[]) {
+			require(paths, (...modules: LocaleModule<T>[]) => {
 				resolve(mapMessages(modules));
 			});
 		});
@@ -156,7 +160,7 @@ function getSupportedLocales(locale: string, supported: string[] = []): string[]
  * The target value.
  */
 function isContextObject(value: any): boolean {
-	return value.state && typeof value.own === 'function' && typeof value.invalidate === 'function';
+	return Boolean(value.state) && typeof value.own === 'function' && typeof value.invalidate === 'function';
 }
 
 /**
@@ -175,7 +179,7 @@ const normalizeLocale = (function () {
 				return locale;
 			}
 
-			return locale.split('.').slice(0, -1).map(function (part: string): string {
+			return locale.split('.').slice(0, -1).map((part: string): string => {
 				return part.replace(/_/g, '-');
 			}).join('-');
 		};
@@ -224,12 +228,12 @@ function resolveLocalePaths<T extends Messages>(path: string, locale: string, su
 	validatePath(path);
 
 	let filename: string;
-	const parentDirectory = path.replace(VALID_PATH_PATTERN, function (matched: string): string {
+	const parentDirectory = path.replace(VALID_PATH_PATTERN, (matched: string): string => {
 		filename = matched;
 		return PATH_SEPARATOR;
 	});
 	const locales = getSupportedLocales(locale, supported);
-	return locales.map(function (locale: string): string {
+	return locales.map((locale: string): string => {
 		return `${parentDirectory}${locale}${filename}`;
 	});
 }
@@ -263,7 +267,7 @@ function validatePath(path: string): void {
  * @return A promise to the locale-specific messages.
  */
 function i18n<T extends Messages>(bundle: Bundle<T>): Promise<T>;
-function i18n<T extends Messages>(bundle: Bundle<T>, context: LocaleContext): Promise<T>;
+function i18n<T extends Messages>(bundle: Bundle<T>, context: LocaleContext<LocaleState>): Promise<T>;
 function i18n<T extends Messages>(bundle: Bundle<T>, locale: string): Promise<T>;
 function i18n<T extends Messages>(bundle: Bundle<T>, context?: any): Promise<T> {
 	const locale = resolveLocale(context);
@@ -294,8 +298,8 @@ function i18n<T extends Messages>(bundle: Bundle<T>, context?: any): Promise<T> 
 		return Promise.resolve(messages);
 	}
 
-	return loadLocaleBundles(localePaths).then(function (bundles: T[]): T {
-		return bundles.reduce(function (previous: T, partial: T, i: number): T {
+	return loadLocaleBundles(localePaths).then((bundles: T[]): T => {
+		return bundles.reduce((previous: T, partial: T, i: number): T => {
 			const localeMessages = assign({}, previous, partial);
 			return localeMessages;
 		}, messages);
@@ -315,9 +319,9 @@ export function switchLocale(locale: string): void {
 	rootLocale = locale;
 
 	if (previous !== rootLocale) {
-		contextObjects.forEach(function (context: LocaleContext) {
+		contextObjects.forEach((context: LocaleContext<LocaleState>) => {
 			if (!context.state.locale) {
-				(<any> context).invalidate();
+				context.invalidate && context.invalidate();
 			}
 		});
 	}
