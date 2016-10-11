@@ -43,7 +43,7 @@ Using the previous example as the default bundle, any locale-specific messages a
 import i18n, { Messages } from 'dojo-i18n/main';
 import bundle from 'nls/common';
 
-i18n<Messages>(bundle, 'fr').then(function (messages: Messages) {
+i18n(bundle, 'fr').then(function (messages: Messages) {
 	console.log(messages.hello); // "Bonjour"
 	console.log(messages.goodbye); // "Au revoir"
 });
@@ -60,7 +60,7 @@ const context = {
 	state: { locale: 'fr' }
 } as LocaleContext;
 
-i18n<Messages>(bundle, context).then(function (messages: Messages) {
+i18n(bundle, context).then(function (messages: Messages) {
 	console.log(messages.hello); // "Bonjour"
 	console.log(messages.goodbye); // "Au revoir"
 });
@@ -81,7 +81,7 @@ import bundle from 'nls/bundle';
 const createCustomWidget = createRenderMixin
 	.mixin({
 		render() {
-			return i18n<Messages>(bundle, this).then(function (messages: Messages) {
+			return i18n(bundle, this).then(function (messages: Messages) {
 				return messages.hello;
 			});
 		}

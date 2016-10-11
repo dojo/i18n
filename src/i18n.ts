@@ -7,7 +7,7 @@ import Promise from 'dojo-shim/Promise';
 /**
  * A default bundle used as basis for loading locale-specific bundles.
  */
-export interface Bundle<T extends Messages> {
+export interface Bundle<T extends Messages | any> {
 	/**
 	 * The absolute module ID used by the loader to resolve paths to locale-specific paths. This MUST follow the format
 	 * "{basePath}{separator}{filename}". For example, if the module ID for a bundle is "nls/common", the loader will

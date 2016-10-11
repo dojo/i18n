@@ -44,7 +44,7 @@ registerSuite({
 		},
 
 		'assert system locale used as default'()  {
-			return i18n<Messages>(bundle).then(function (messages: Messages) {
+			return i18n(bundle).then(function (messages: Messages) {
 				assert.deepEqual(messages, {
 					hello: 'Hello',
 					helloReply: 'Hello',
@@ -54,7 +54,7 @@ registerSuite({
 		},
 
 		'assert with string locale'() {
-			return i18n<Messages>(bundle, 'ar').then(function (messages: Messages) {
+			return i18n(bundle, 'ar').then(function (messages: Messages) {
 				assert.deepEqual(messages, {
 					hello: 'السلام عليكم',
 					helloReply: 'و عليكم السام',
@@ -68,7 +68,7 @@ registerSuite({
 				state: { locale: 'ar' }
 			};
 
-			return i18n<Messages>(bundle, context).then(function (messages: Messages) {
+			return i18n(bundle, context).then(function (messages: Messages) {
 				assert.deepEqual(messages, {
 					hello: 'السلام عليكم',
 					helloReply: 'و عليكم السام',
@@ -82,7 +82,7 @@ registerSuite({
 				state: {}
 			};
 
-			return i18n<Messages>(bundle, context).then(function (messages: Messages) {
+			return i18n(bundle, context).then(function (messages: Messages) {
 				assert.deepEqual(messages, {
 					hello: 'Hello',
 					helloReply: 'Hello',
@@ -92,7 +92,7 @@ registerSuite({
 		},
 
 		'assert with nested locale'() {
-			return i18n<Messages>(bundle, 'ar-JO').then(function (messages: Messages) {
+			return i18n(bundle, 'ar-JO').then(function (messages: Messages) {
 				// ar-JO is missing "goodbye" key
 				assert.deepEqual(messages, {
 					hello: 'مرحبا',
@@ -103,7 +103,7 @@ registerSuite({
 		},
 
 		'assert with invalid locale'() {
-			return i18n<Messages>(bundle, 'ar-JO-').then(function (messages: Messages) {
+			return i18n(bundle, 'ar-JO-').then(function (messages: Messages) {
 				assert.deepEqual(messages, {
 					hello: 'مرحبا',
 					helloReply: 'مرحبتين',
@@ -113,7 +113,7 @@ registerSuite({
 		},
 
 		'assert unsupported locale'() {
-			return i18n<Messages>(bundle, 'fr-CA').then(function (messages: Messages) {
+			return i18n(bundle, 'fr-CA').then(function (messages: Messages) {
 				assert.deepEqual(messages, {
 					hello: 'Hello',
 					helloReply: 'Hello',
@@ -126,7 +126,7 @@ registerSuite({
 			const { bundlePath, messages } = bundle;
 			const localeless = { bundlePath, messages };
 
-			return i18n<Messages>(localeless, 'ar').then(function (messages: Messages) {
+			return i18n(localeless, 'ar').then(function (messages: Messages) {
 				assert.deepEqual(messages, {
 					hello: 'Hello',
 					helloReply: 'Hello',

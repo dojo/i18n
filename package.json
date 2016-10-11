@@ -18,14 +18,14 @@
     "test": "grunt test"
   },
   "peerDependencies": {
-    "dojo-compose": ">=2.0.0-beta.9",
-    "dojo-core": ">=2.0.0-alpha.11",
-    "dojo-has": ">=2.0.0-alpha.3",
-    "dojo-shim": ">=2.0.0-alpha.3"
+    "dojo-compose": ">=2.0.0-beta.10",
+    "dojo-core": ">=2.0.0-alpha.14",
+    "dojo-has": ">=2.0.0-alpha.4",
+    "dojo-shim": ">=2.0.0-beta.1"
   },
   "devDependencies": {
     "codecov.io": "0.1.6",
-    "dojo-loader": ">=2.0.0-beta.5",
+    "dojo-loader": ">=2.0.0-beta.7",
     "dts-generator": "~1.7.0",
     "glob": "^7.0.3",
     "grunt": "^1.0.1",
