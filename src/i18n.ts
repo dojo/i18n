@@ -1,3 +1,4 @@
+/* tslint:disable:interface-name */
 import has from 'dojo-core/has';
 import global from 'dojo-core/global';
 import { Handle } from 'dojo-core/interfaces';
@@ -7,7 +8,7 @@ import Promise from 'dojo-shim/Promise';
 /**
  * A default bundle used as basis for loading locale-specific bundles.
  */
-export interface Bundle<T extends Messages | any> {
+export interface Bundle<T extends Messages> {
 	/**
 	 * The absolute module ID used by the loader to resolve paths to locale-specific paths. This MUST follow the format
 	 * "{basePath}{separator}{filename}". For example, if the module ID for a bundle is "nls/common", the loader will
@@ -29,6 +30,18 @@ export interface Bundle<T extends Messages | any> {
 
 interface BundleMap<T extends Messages> {
 	[key: string]: T;
+}
+
+export interface I18n<T extends Messages> {
+	(bundle: Bundle<T>): Promise<T>;
+	(bundle: Bundle<T>, context: LocaleContext<LocaleState>): Promise<T>;
+	(bundle: Bundle<T>, locale: string): Promise<T>;
+	(bundle: Bundle<T>, context?: any): Promise<T>;
+
+	/**
+	 * The current namespace as set via `switchLocale`. Defaults to `systemLocale`.
+	 */
+	readonly locale: string;
 }
 
 /**
@@ -306,7 +319,13 @@ function i18n<T extends Messages>(bundle: Bundle<T>, context?: any): Promise<T> 
 	});
 }
 
-export default i18n;
+Object.defineProperty(i18n, 'locale', {
+	get() {
+		return rootLocale || systemLocale;
+	}
+});
+
+export default i18n as I18n<Messages>;
 
 /**
  * Change the root locale, and invalidate any registered statefuls.

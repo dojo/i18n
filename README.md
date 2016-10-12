@@ -68,6 +68,9 @@ i18n(bundle, context).then(function (messages: Messages) {
 
 If an unsupported locale is passed to `i18n`, then the default messages are returned. Further, any messages not provided by the locale-specific bundle will also fall back to their defaults. As such, the default bundle should contain _all_ message keys used by any of the locale-specific bundles.
 
+### Determining the Current Locale
+
+The current locale can be accessed via the read-only property `i18n.locale`, which will always be either the locale set via `switchLocale` (see below) or the `systemLocale`. `systemLocale` is always set to the user's default locale.
 
 ### Changing the Root Locale
 

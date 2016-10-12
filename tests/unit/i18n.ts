@@ -211,5 +211,16 @@ registerSuite({
 				});
 			}
 		};
-	})()
+	})(),
+
+	locale: {
+		'assert defaults to system locale'() {
+			assert.strictEqual(i18n.locale, systemLocale, '`i18n.locale` defaults to the system locale.');
+		},
+
+		'assert reflects current locale'() {
+			switchLocale('fr');
+			assert.strictEqual(i18n.locale, 'fr', '`i18n.locale` is the current locale.');
+		}
+	}
 });

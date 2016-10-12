@@ -18,10 +18,10 @@
     "test": "grunt test"
   },
   "peerDependencies": {
-    "dojo-compose": ">=2.0.0-beta.10",
-    "dojo-core": ">=2.0.0-alpha.14",
-    "dojo-has": ">=2.0.0-alpha.4",
-    "dojo-shim": ">=2.0.0-beta.1"
+    "dojo-compose": ">=2.0.0-beta.13",
+    "dojo-core": ">=2.0.0-alpha.15",
+    "dojo-has": ">=2.0.0-alpha.5",
+    "dojo-shim": ">=2.0.0-beta.2"
   },
   "devDependencies": {
     "codecov.io": "0.1.6",
@@ -32,7 +32,7 @@
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-dojo2": ">=2.0.0-beta.16",
+    "grunt-dojo2": ">=2.0.0-beta.18",
     "grunt-release": "0.13.1",
     "grunt-text-replace": "0.4.0",
     "grunt-ts": "^5.5.1",
