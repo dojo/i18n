@@ -356,7 +356,8 @@ export function switchLocale(locale: string): void {
 export const systemLocale: string = (function () {
 	let systemLocale = 'en';
 	if (has('host-browser')) {
-		systemLocale = navigator.language;
+		const navigator = global.navigator;
+		systemLocale = navigator.language || navigator.userLanguage;
 	}
 	else if (has('host-node')) {
 		systemLocale = global.process.env.LANG;

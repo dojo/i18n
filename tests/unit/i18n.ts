@@ -17,7 +17,8 @@ registerSuite({
 		let expected = 'en';
 
 		if (has('host-browser')) {
-			expected = global.navigator.language;
+			const navigator = global.navigator;
+			expected = navigator.language || navigator.userLanguage;
 		}
 		else if (has('host-node')) {
 			expected = global.process.env.LANG;
