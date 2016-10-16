@@ -29,7 +29,7 @@ export interface Bundle<T extends Messages> {
 }
 
 interface BundleMap<T extends Messages> {
-	[key: string]: T;
+	[path: string]: { [locale: string]: T };
 }
 
 export interface I18n<T extends Messages> {
@@ -90,6 +90,7 @@ export interface Messages {
 const PATH_SEPARATOR: string = has('host-node') ? global.require('path').sep : '/';
 const VALID_PATH_PATTERN = new RegExp(PATH_SEPARATOR + '[^' + PATH_SEPARATOR + ']+$');
 const contextObjects: LocaleContext<LocaleState>[] = [];
+let bundleMap = {} as BundleMap<Messages>;
 let rootLocale: string;
 
 /**
@@ -267,6 +268,29 @@ function validatePath(path: string): void {
 }
 
 /**
+ * Return the cached messages for the specified bundle and locale. If messages have not been previously loaded for the
+ * specified locale, no value will be returned.
+ *
+ * @param bundle
+ * The bundle object or path.
+ *
+ * @param locale
+ * The locale of the desired messages.
+ *
+ * @return The cached messages object, if it exists.
+ */
+export function getCachedMessages<T extends Messages>(bundlePath: string, locale: string): T | void;
+export function getCachedMessages<T extends Messages>(bundle: Bundle<T>, locale: string): T | void;
+export function getCachedMessages<T extends Messages>(bundle: any, locale: string): T | void {
+	const bundlePath = (typeof bundle === 'string') ? bundle : bundle.bundlePath;
+	const cached = bundleMap[bundlePath];
+
+	if (cached) {
+		return cached[locale] as T;
+	}
+}
+
+/**
  * Load locale-specific messages for the specified bundle and locale.
  *
  * @param bundle
@@ -305,6 +329,11 @@ function i18n<T extends Messages>(bundle: Bundle<T>, context?: any): Promise<T> 
 		});
 	}
 
+	const cachedMessages = getCachedMessages(path, locale);
+	if (cachedMessages) {
+		return Promise.resolve(cachedMessages);
+	}
+
 	const localePaths = resolveLocalePaths(path, locale, locales);
 
 	if (!localePaths.length) {
@@ -312,8 +341,15 @@ function i18n<T extends Messages>(bundle: Bundle<T>, context?: any): Promise<T> 
 	}
 
 	return loadLocaleBundles(localePaths).then((bundles: T[]): T => {
-		return bundles.reduce((previous: T, partial: T, i: number): T => {
+		return bundles.reduce((previous: T, partial: T): T => {
 			const localeMessages = assign({}, previous, partial);
+			let localeCache = bundleMap[bundlePath];
+
+			if (!localeCache) {
+				localeCache = bundleMap[bundlePath] = {};
+			}
+
+			localeCache[locale] = Object.freeze(localeMessages);
 			return localeMessages;
 		}, messages);
 	});
@@ -326,6 +362,22 @@ Object.defineProperty(i18n, 'locale', {
 });
 
 export default i18n as I18n<Messages>;
+
+/**
+ * Invalidate the cache for a particular bundle, or invalidate the entire cache. Note that cached messages for all
+ * locales for a given bundle will be cleared.
+ *
+ * @param bundlePath
+ * The optional path of the bundle to invalidate. If no path is provided, then the cache is cleared for all bundles.
+ */
+export function invalidate(bundlePath?: string) {
+	if (bundlePath) {
+		delete bundleMap[bundlePath];
+	}
+	else {
+		bundleMap = {} as BundleMap<Messages>;
+	}
+}
 
 /**
  * Change the root locale, and invalidate any registered statefuls.
