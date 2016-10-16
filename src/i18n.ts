@@ -272,21 +272,24 @@ function validatePath(path: string): void {
  * specified locale, no value will be returned.
  *
  * @param bundle
- * The bundle object or path.
+ * The default bundle that is used to determine where the locale-specific bundles are located.
  *
  * @param locale
  * The locale of the desired messages.
  *
  * @return The cached messages object, if it exists.
  */
-export function getCachedMessages<T extends Messages>(bundlePath: string, locale: string): T | void;
-export function getCachedMessages<T extends Messages>(bundle: Bundle<T>, locale: string): T | void;
-export function getCachedMessages<T extends Messages>(bundle: any, locale: string): T | void {
-	const bundlePath = (typeof bundle === 'string') ? bundle : bundle.bundlePath;
-	const cached = bundleMap[bundlePath];
+export function getCachedMessages<T extends Messages>(bundle: Bundle<T>, locale: string): T | void {
+	const { bundlePath, locales } = bundle;
+	const supportedLocales = getSupportedLocales(locale, bundle.locales);
 
+	if (!supportedLocales.length) {
+		return bundle.messages;
+	}
+
+	const cached = bundleMap[bundlePath];
 	if (cached) {
-		return cached[locale] as T;
+		return cached[supportedLocales[supportedLocales.length - 1]] as T;
 	}
 }
 
@@ -329,17 +332,12 @@ function i18n<T extends Messages>(bundle: Bundle<T>, context?: any): Promise<T> 
 		});
 	}
 
-	const cachedMessages = getCachedMessages(path, locale);
+	const cachedMessages = getCachedMessages(bundle, locale);
 	if (cachedMessages) {
 		return Promise.resolve(cachedMessages);
 	}
 
 	const localePaths = resolveLocalePaths(path, locale, locales);
-
-	if (!localePaths.length) {
-		return Promise.resolve(messages);
-	}
-
 	return loadLocaleBundles(localePaths).then((bundles: T[]): T => {
 		return bundles.reduce((previous: T, partial: T): T => {
 			const localeMessages = assign({}, previous, partial);

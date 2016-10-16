@@ -33,7 +33,7 @@ registerSuite({
 			assert.isUndefined(getCachedMessages(bundle, 'ar'));
 		},
 
-		'assert registered locale, with a bundle object'() {
+		'assert supported locale'() {
 			return i18n(bundle, 'ar').then(() => {
 				assert.deepEqual(getCachedMessages(bundle, 'ar'), {
 					hello: 'السلام عليكم',
@@ -43,14 +43,16 @@ registerSuite({
 			});
 		},
 
-		'assert registered locale, with a bundle path'() {
+		'assert unsupported locale'(this: any) {
+			const cached = getCachedMessages(bundle, 'bogus-locale');
+			assert.deepEqual(cached, bundle.messages, 'Default messages returned for unsupported locale.');
+		},
+
+		'assert most specific supported locale returned'() {
 			return i18n(bundle, 'ar').then(() => {
-				const { bundlePath } = bundle;
-				assert.deepEqual(getCachedMessages(bundlePath, 'ar'), {
-					hello: 'السلام عليكم',
-					helloReply: 'و عليكم السام',
-					goodbye: 'مع السلامة'
-				}, 'Locale messages can be retrieved with a bundle path.');
+				const cached = getCachedMessages(bundle, 'ar');
+				assert.deepEqual(getCachedMessages(bundle, 'ar-IR'), cached,
+					'Messages are returned for the most specific supported locale.');
 			});
 		}
 	},
