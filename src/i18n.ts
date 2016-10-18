@@ -3,6 +3,7 @@ import has from 'dojo-core/has';
 import global from 'dojo-core/global';
 import { Handle } from 'dojo-core/interfaces';
 import { assign } from 'dojo-core/lang';
+import Map from 'dojo-shim/Map';
 import Promise from 'dojo-shim/Promise';
 
 /**
@@ -26,10 +27,6 @@ export interface Bundle<T extends Messages> {
 	 * Note that any message key used in the i18n system MUST have a default specified here.
 	 */
 	readonly messages: T;
-}
-
-interface BundleMap<T extends Messages> {
-	[path: string]: { [locale: string]: T };
 }
 
 export interface I18n<T extends Messages> {
@@ -90,7 +87,7 @@ export interface Messages {
 const PATH_SEPARATOR: string = has('host-node') ? global.require('path').sep : '/';
 const VALID_PATH_PATTERN = new RegExp(PATH_SEPARATOR + '[^' + PATH_SEPARATOR + ']+$');
 const contextObjects: LocaleContext<LocaleState>[] = [];
-let bundleMap = {} as BundleMap<Messages>;
+const bundleMap = new Map<string, Map<string, Messages>>();
 let rootLocale: string;
 
 /**
@@ -287,9 +284,9 @@ export function getCachedMessages<T extends Messages>(bundle: Bundle<T>, locale:
 		return bundle.messages;
 	}
 
-	const cached = bundleMap[bundlePath];
+	const cached = bundleMap.get(bundlePath);
 	if (cached) {
-		return cached[supportedLocales[supportedLocales.length - 1]] as T;
+		return cached.get(supportedLocales[supportedLocales.length - 1]) as T;
 	}
 }
 
@@ -341,13 +338,14 @@ function i18n<T extends Messages>(bundle: Bundle<T>, context?: any): Promise<T> 
 	return loadLocaleBundles(localePaths).then((bundles: T[]): T => {
 		return bundles.reduce((previous: T, partial: T): T => {
 			const localeMessages = assign({}, previous, partial);
-			let localeCache = bundleMap[bundlePath];
+			let localeCache = bundleMap.get(bundlePath);
 
 			if (!localeCache) {
-				localeCache = bundleMap[bundlePath] = {};
+				localeCache = new Map<string, Messages>();
+				bundleMap.set(bundlePath, localeCache);
 			}
 
-			localeCache[locale] = Object.freeze(localeMessages);
+			localeCache.set(locale, Object.freeze(localeMessages));
 			return localeMessages;
 		}, messages);
 	});
@@ -370,10 +368,10 @@ export default i18n as I18n<Messages>;
  */
 export function invalidate(bundlePath?: string) {
 	if (bundlePath) {
-		delete bundleMap[bundlePath];
+		bundleMap.delete(bundlePath);
 	}
 	else {
-		bundleMap = {} as BundleMap<Messages>;
+		bundleMap.clear();
 	}
 }
 
