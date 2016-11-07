@@ -3,8 +3,6 @@ import 'globalize/globalize/unit';
 import i18n from './i18n';
 import { NumberFormatterOptions } from './number';
 
-export type UnitLength = 'long' | 'narrow' | 'short';
-
 export type UnitFormatterOptions = null | {
 	/**
 	 * form: [String] eg. "long", "short" or "narrow".
@@ -16,6 +14,8 @@ export type UnitFormatterOptions = null | {
 	 */
 	numberFormatter?: NumberFormatterOptions;
 }
+
+export type UnitLength = 'long' | 'narrow' | 'short';
 
 /**
  * @private

@@ -3,8 +3,6 @@ import 'globalize/globalize/date';
 import 'globalize/globalize/relative-time';
 import i18n from './i18n';
 
-export type DateLength = 'short' | 'medium' | 'long' | 'full';
-
 export type DateFormatterOptions = null | {
 	/**
 	 * String value indicating a skeleton, eg. { skeleton: "GyMMMd" }.
@@ -29,7 +27,7 @@ export type DateFormatterOptions = null | {
 	datetime?: DateLength;
 }
 
-export type RelativeTimeLength = 'short' | 'narrow';
+export type DateLength = 'short' | 'medium' | 'long' | 'full';
 
 export type RelativeTimeFormatterOptions = null | {
 	/**
@@ -37,6 +35,8 @@ export type RelativeTimeFormatterOptions = null | {
 	 */
 	form?: RelativeTimeLength;
 }
+
+export type RelativeTimeLength = 'short' | 'narrow';
 
 /**
  * @private

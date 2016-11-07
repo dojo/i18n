@@ -56,14 +56,14 @@ interface CommonNumberFormatterOptions {
 	useGrouping?: boolean;
 }
 
-export type CurrencyStyleOption = 'accounting' | 'code' | 'name' | 'symbol';
-
 export type CurrencyFormatterOptions = null | CommonNumberFormatterOptions & {
 	/**
 	 * symbol (default), accounting, code or name.
 	 */
 	style?: CurrencyStyleOption;
 }
+
+export type CurrencyStyleOption = 'accounting' | 'code' | 'name' | 'symbol';
 
 export type NumberFormatterOptions = null | CommonNumberFormatterOptions & {
 	/**
