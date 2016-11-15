@@ -4,7 +4,7 @@ import 'globalize/globalize/number';
 import 'globalize/globalize/plural';
 import i18n from './i18n';
 
-interface CommonNumberFormatterOptions {
+export interface CommonNumberFormatterOptions {
 	/**
 	 * Non-negative integer Number value indicating the minimum integer digits to be used. Numbers will be padded with
 	 * leading zeroes if necessary.
