@@ -1,3 +1,4 @@
+import { around } from 'dojo-core/aspect';
 import { padStart } from 'dojo-core/stringExtras';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
@@ -23,9 +24,26 @@ function getOffsets(date: Date) {
 	return [ longOffset, fullOffset ];
 }
 
-const getDateOptions = (function () {
-	const date = new Date(1815, 11, 10, 11, 27);
+function getTimezoneDate(date: Date, offset: number = 0): Date {
+	const copy = new Date(date.getTime());
+	around(copy, 'getTimezoneOffset', () => () => offset * 60);
+	return copy;
+}
+
+function getTimezones(date: Date, standard: string = 'GMT') {
 	const [ longOffset, fullOffset ] = getOffsets(date);
+	const fullSeparator = String.fromCharCode(standard === 'UTC' ? 8722 : 45);
+	const zeroPattern = /^[0:]+$/;
+	return [
+		`${standard}${longOffset ? '-' + longOffset : ''}`,
+		`${standard}${zeroPattern.test(fullOffset as string) ? '' : fullSeparator + fullOffset}`
+	];
+}
+
+function getDateOptions(type: string, timezoneOffset?: number) {
+	const date = getTimezoneDate(new Date(1815, 11, 10, 11, 27), timezoneOffset);
+	const [ gmtLong, gmtFull ] = getTimezones(date);
+	const [ utcLong, utcFull ] = getTimezones(date, 'UTC');
 	const values = {
 		en: {
 			date: {
@@ -38,8 +56,8 @@ const getDateOptions = (function () {
 			datetime: {
 				short: '12/10/15, 11:27 AM',
 				medium: 'Dec 10, 1815, 11:27:00 AM',
-				long: `December 10, 1815 at 11:27:00 AM GMT-${longOffset}`,
-				full: `Sunday, December 10, 1815 at 11:27:00 AM GMT-${fullOffset}`
+				long: `December 10, 1815 at 11:27:00 AM ${gmtLong}`,
+				full: `Sunday, December 10, 1815 at 11:27:00 AM ${gmtFull}`
 			},
 
 			skeleton: {
@@ -49,8 +67,8 @@ const getDateOptions = (function () {
 			time: {
 				short: '11:27 AM',
 				medium: '11:27:00 AM',
-				long: `11:27:00 AM GMT-${longOffset}`,
-				full: `11:27:00 AM GMT-${fullOffset}`
+				long: `11:27:00 AM ${gmtLong}`,
+				full: `11:27:00 AM ${gmtFull}`
 			}
 		},
 
@@ -65,8 +83,8 @@ const getDateOptions = (function () {
 			datetime: {
 				short: '10/12/1815 11:27',
 				medium: '10 déc. 1815 à 11:27:00',
-				long: `10 décembre 1815 à 11:27:00 UTC-${longOffset}`,
-				full: `dimanche 10 décembre 1815 à 11:27:00 UTC−${fullOffset}`
+				long: `10 décembre 1815 à 11:27:00 ${utcLong}`,
+				full: `dimanche 10 décembre 1815 à 11:27:00 ${utcFull}`
 			},
 
 			skeleton: {
@@ -76,19 +94,17 @@ const getDateOptions = (function () {
 			time: {
 				short: '11:27',
 				medium: '11:27:00',
-				long: `11:27:00 UTC-${longOffset}`,
-				full: `11:27:00 UTC−${fullOffset}`
+				long: `11:27:00 ${utcLong}`,
+				full: `11:27:00 ${utcFull}`
 			}
 		}
 	};
 
-	return function (type: string) {
-		const enValues = (<any> values)['en'][type];
-		const frValues = (<any> values)['fr'][type];
+	const enValues = (<any> values)['en'][type];
+	const frValues = (<any> values)['fr'][type];
 
-		return [ enValues, frValues ];
-	};
-})();
+	return [ enValues, frValues ];
+}
 
 registerSuite({
 	name: 'date',
@@ -118,11 +134,10 @@ registerSuite({
 		},
 
 		'with options': (function () {
-			const date = new Date(1815, 11, 10, 11, 27);
-
-			function getAssertion(type: string) {
+			function getAssertion(type: string, timezoneOffset?: number) {
+				const date = getTimezoneDate(new Date(1815, 11, 10, 11, 27), timezoneOffset);
 				return function () {
-					const [ enValues, frValues ] = getDateOptions(type);
+					const [ enValues, frValues ] = getDateOptions(type, timezoneOffset);
 
 					Object.keys(enValues).forEach((key: DateLength) => {
 						const formatter = getDateFormatter({ [type]: key });
@@ -138,9 +153,15 @@ registerSuite({
 
 			return {
 				'assert "date" option': getAssertion('date'),
-				'assert "time" option': getAssertion('time'),
-				'assert "datetime" option': getAssertion('datetime'),
-				'assert skeleton option': getAssertion('skeleton')
+				'"time" option': {
+					'assert no timezone offset': getAssertion('time'),
+					'assert with timezone offset': getAssertion('time', 6)
+				},
+				'"datetime" option': {
+					'assert no timezone offset': getAssertion('datetime'),
+					'assert with timezone offset': getAssertion('datetime', 6)
+				},
+				'assert "skeleton" option': getAssertion('skeleton')
 			};
 		})()
 	},
@@ -190,18 +211,19 @@ registerSuite({
 				expected.setSeconds(0);
 				expected.setMilliseconds(0);
 
-				const [ longOffset, fullOffset ] = getOffsets(expected);
+				const [ gmtLong, gmtFull ] = getTimezones(expected);
+				const [ utcLong, utcFull ] = getTimezones(expected, 'UTC');
 				const enValues = {
 					short: '11:27 AM',
 					medium: '11:27:00 AM',
-					long: `11:27:00 AM GMT-${longOffset}`,
-					full: `11:27:00 AM GMT-${fullOffset}`
+					long: `11:27:00 AM ${gmtLong}`,
+					full: `11:27:00 AM ${gmtFull}`
 				};
 				const frValues = {
 					short: '11:27',
 					medium: '11:27:00',
-					long: `11:27:00 UTC-${longOffset}`,
-					full: `11:27:00 UTC−${fullOffset}`
+					long: `11:27:00 ${utcLong}`,
+					full: `11:27:00 ${utcFull}`
 				};
 
 				Object.keys(enValues).forEach((key: DateLength) => {
@@ -220,18 +242,19 @@ registerSuite({
 
 			'assert "datetime" option'() {
 				const expected = new Date(2015, 11, 10, 11, 27);
-				const [ longOffset, fullOffset ] = getOffsets(expected);
+				const [ gmtLong, gmtFull ] = getTimezones(expected);
+				const [ utcLong, utcFull ] = getTimezones(expected, 'UTC');
 				const enValues = {
 					short: '12/10/15, 11:27 AM',
 					medium: 'Dec 10, 2015, 11:27:00 AM',
-					long: `December 10, 2015 at 11:27:00 AM GMT-${longOffset}`,
-					full: `Sunday, December 10, 2015 at 11:27:00 AM GMT-${fullOffset}`
+					long: `December 10, 2015 at 11:27:00 AM ${gmtLong}`,
+					full: `Sunday, December 10, 2015 at 11:27:00 AM ${gmtFull}`
 				};
 				const frValues = {
 					short: '10/12/2015 11:27',
 					medium: '10 déc. 2015 à 11:27:00',
-					long: `10 décembre 2015 à 11:27:00 UTC-${longOffset}`,
-					full: `dimanche 10 décembre 2015 à 11:27:00 UTC−${fullOffset}`
+					long: `10 décembre 2015 à 11:27:00 ${utcLong}`,
+					full: `dimanche 10 décembre 2015 à 11:27:00 ${utcFull}`
 				};
 
 				Object.keys(enValues).forEach((key: DateLength) => {
@@ -275,40 +298,30 @@ registerSuite({
 		},
 
 		'assert options': (function () {
-			const date = new Date(1815, 11, 10, 11, 27);
+			function getAssertion(type: string, timezoneOffset?: number) {
+				const date = getTimezoneDate(new Date(1815, 11, 10, 11, 27), timezoneOffset);
+
+				return function () {
+					const [ enValues, frValues ] = getDateOptions(type, timezoneOffset);
+
+					Object.keys(enValues).forEach((key: DateLength) => {
+						assert.strictEqual(formatDate(date, { [type]: key }), (<any> enValues)[key]);
+					});
+					Object.keys(frValues).forEach((key: DateLength) => {
+						assert.strictEqual(formatDate(date, { [type]: key }, 'fr'), (<any> frValues)[key]);
+					});
+				};
+			}
 
 			return {
-				'assert "date" option'() {
-					const [ enValues, frValues ] = getDateOptions('date');
-
-					Object.keys(enValues).forEach((key: DateLength) => {
-						assert.strictEqual(formatDate(date, { date: key }), (<any> enValues)[key]);
-					});
-					Object.keys(frValues).forEach((key: DateLength) => {
-						assert.strictEqual(formatDate(date, { date: key }, 'fr'), (<any> frValues)[key]);
-					});
+				'assert "date" option': getAssertion('date'),
+				'"time" values': {
+					'assert no timezone offset': getAssertion('time'),
+					'assert with timezone offset': getAssertion('time', 6)
 				},
-
-				'assert "time" values'() {
-					const [ enValues, frValues ] = getDateOptions('time');
-
-					Object.keys(enValues).forEach((key: DateLength) => {
-						assert.strictEqual(formatDate(date, { time: key }), (<any> enValues)[key]);
-					});
-					Object.keys(frValues).forEach((key: DateLength) => {
-						assert.strictEqual(formatDate(date, { time: key }, 'fr'), (<any> frValues)[key]);
-					});
-				},
-
-				'assert "datetime" values'() {
-					const [ enValues, frValues ] = getDateOptions('datetime');
-
-					Object.keys(enValues).forEach((key: DateLength) => {
-						assert.strictEqual(formatDate(date, { datetime: key }), (<any> enValues)[key]);
-					});
-					Object.keys(frValues).forEach((key: DateLength) => {
-						assert.strictEqual(formatDate(date, { datetime: key }, 'fr'), (<any> frValues)[key]);
-					});
+				'"datetime" values': {
+					'assert no timezone offset': getAssertion('datetime'),
+					'assert with timezone offset': getAssertion('datetime', 6)
 				}
 			};
 		})()
@@ -401,18 +414,19 @@ registerSuite({
 				expected.setSeconds(0);
 				expected.setMilliseconds(0);
 
-				const [ longOffset, fullOffset ] = getOffsets(expected);
+				const [ gmtLong, gmtFull ] = getTimezones(expected);
+				const [ utcLong, utcFull ] = getTimezones(expected, 'UTC');
 				const enValues = {
 					short: '11:27 AM',
 					medium: '11:27:00 AM',
-					long: `11:27:00 AM GMT-${longOffset}`,
-					full: `11:27:00 AM GMT-${fullOffset}`
+					long: `11:27:00 AM ${gmtLong}`,
+					full: `11:27:00 AM ${gmtFull}`
 				};
 				const frValues = {
 					short: '11:27',
 					medium: '11:27:00',
-					long: `11:27:00 UTC-${longOffset}`,
-					full: `11:27:00 UTC−${fullOffset}`
+					long: `11:27:00 ${utcLong}`,
+					full: `11:27:00 ${utcFull}`
 				};
 
 				Object.keys(enValues).forEach((key: DateLength) => {
@@ -431,18 +445,19 @@ registerSuite({
 
 			'assert "datetime" option'() {
 				const expected = new Date(2015, 11, 10, 11, 27);
-				const [ longOffset, fullOffset ] = getOffsets(expected);
+				const [ gmtLong, gmtFull ] = getTimezones(expected);
+				const [ utcLong, utcFull ] = getTimezones(expected, 'UTC');
 				const enValues = {
 					short: '12/10/15, 11:27 AM',
 					medium: 'Dec 10, 2015, 11:27:00 AM',
-					long: `December 10, 2015 at 11:27:00 AM GMT-${longOffset}`,
-					full: `Sunday, December 10, 2015 at 11:27:00 AM GMT-${fullOffset}`
+					long: `December 10, 2015 at 11:27:00 AM ${gmtLong}`,
+					full: `Sunday, December 10, 2015 at 11:27:00 AM ${gmtFull}`
 				};
 				const frValues = {
 					short: '10/12/2015 11:27',
 					medium: '10 déc. 2015 à 11:27:00',
-					long: `10 décembre 2015 à 11:27:00 UTC-${longOffset}`,
-					full: `dimanche 10 décembre 2015 à 11:27:00 UTC−${fullOffset}`
+					long: `10 décembre 2015 à 11:27:00 ${utcLong}`,
+					full: `dimanche 10 décembre 2015 à 11:27:00 ${utcFull}`
 				};
 
 				Object.keys(enValues).forEach((key: DateLength) => {
