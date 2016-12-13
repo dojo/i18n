@@ -1,4 +1,3 @@
-import global from 'dojo-core/global';
 import Promise from 'dojo-shim/Promise';
 import * as Globalize from 'globalize/dist/globalize';
 import {
@@ -10,12 +9,15 @@ import {
 	supplementalCldrPaths
 } from './load';
 
+declare const __cldrData__: CldrDataResponse;
+
 /**
  * @private
  * Looks for cached CLDR data on the global object, registers it if it has not already been registered,
  * and then returns the data.
  *
- * Loading the data in this manner allows `global.__cldrData__` to be populated after this module loads.
+ * Loading the data in this manner allows a global `__cldrData__` to be populated after this module loads
+ * in the event that a local equivalent is not injected at build time.
  *
  * @return
  * The cached CLDR data object.
@@ -24,7 +26,7 @@ const getCachedCldrData = (function () {
 	let loaded: CldrDataResponse;
 	return function () {
 		if (!loaded) {
-			loaded = global.__cldrData__;
+			loaded = __cldrData__;
 			Object.keys(loaded).forEach((key: string) => {
 				Globalize.load(loaded[key]);
 			});
