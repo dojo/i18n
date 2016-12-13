@@ -89,6 +89,14 @@ const loadLocaleBundles = (function () {
 
 /**
  * @private
+ * Return the root locale. Defaults to the system locale.
+ */
+function getRootLocale(): string {
+	return rootLocale || systemLocale;
+}
+
+/**
+ * @private
  * Retrieve a list of supported locales that can provide messages for the specified locale.
  *
  * @param locale
@@ -239,7 +247,7 @@ export function getCachedMessages<T extends Messages>(bundle: Bundle<T>, locale:
  */
 export function getMessageFormatter(bundlePath: string, key: string, locale?: string): MessageFormatter {
 	const normalized = bundlePath.replace(/\//g, '-').replace(/-$/, '');
-	locale = normalizeLocale(locale || rootLocale || systemLocale);
+	locale = normalizeLocale(locale || getRootLocale());
 	const formatterKey = `${locale}:${bundlePath}:${key}`;
 	let formatter = formatterMap.get(formatterKey);
 
@@ -247,7 +255,7 @@ export function getMessageFormatter(bundlePath: string, key: string, locale?: st
 		return formatter;
 	}
 
-	const globalize = locale !== (rootLocale || systemLocale) ? new Globalize(normalizeLocale(locale)) : Globalize;
+	const globalize = locale !== getRootLocale() ? new Globalize(normalizeLocale(locale)) : Globalize;
 	formatter = globalize.messageFormatter(`${normalized}/${key}`);
 
 	const cached = bundleMap.get(bundlePath);
@@ -272,7 +280,7 @@ export function getMessageFormatter(bundlePath: string, key: string, locale?: st
 function i18n<T extends Messages>(bundle: Bundle<T>, locale?: string): Promise<T> {
 	const { bundlePath, locales, messages } = bundle;
 	const path = bundlePath.replace(/\/$/, '');
-	const currentLocale = locale || rootLocale || systemLocale;
+	const currentLocale = locale || getRootLocale();
 
 	try {
 		validatePath(path);
@@ -307,9 +315,7 @@ function i18n<T extends Messages>(bundle: Bundle<T>, locale?: string): Promise<T
 }
 
 Object.defineProperty(i18n, 'locale', {
-	get() {
-		return rootLocale || systemLocale;
-	}
+	get: getRootLocale
 });
 
 export default i18n as I18n<Messages>;
@@ -370,8 +376,9 @@ export const observeLocale = (function () {
  * A promise that resolves when all data required for the current locale have loaded.
  */
 export function ready(): Promise<void> {
-	return loadCldrData(rootLocale, systemLocale).then(() => {
-		Globalize.locale(rootLocale || systemLocale);
+	const locale = getRootLocale();
+	return loadCldrData(locale).then(() => {
+		Globalize.locale(locale);
 	});
 }
 
