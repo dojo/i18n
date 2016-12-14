@@ -70,7 +70,7 @@ export const supplementalCldrPaths = Object.freeze([
  * @return
  * A promise to the CLDR data for each path.
  */
-const getJson: (paths: string[]) => Promise<CldrData[]> = (function () {
+const getJson: (paths: ReadonlyArray<string>) => Promise<CldrData[]> = (function () {
 	if (has('host-node')) {
 		return function (paths: string[]): Promise<{}[]> {
 			paths = paths.map(path => path + '.json');
