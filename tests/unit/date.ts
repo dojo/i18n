@@ -1,5 +1,5 @@
 import { around } from 'dojo-core/aspect';
-import { padStart } from 'dojo-core/stringExtras';
+import { padStart } from 'dojo-shim/string';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import loadCldrData from '../../src/cldr/load';
@@ -17,8 +17,8 @@ import { switchLocale, systemLocale } from '../../src/i18n';
 function getOffsets(date: Date) {
 	const offset = date.getTimezoneOffset();
 	const longOffset = Math.round(offset / 60);
-	const fullHourOffset = padStart(String(longOffset), 2);
-	const fullSecondOffset = padStart(String(offset % 60), 2);
+	const fullHourOffset = padStart(String(longOffset), 2, '0');
+	const fullSecondOffset = padStart(String(offset % 60), 2, '0');
 	const fullOffset = `${fullHourOffset}:${fullSecondOffset}`;
 
 	return [ longOffset, fullOffset ];
