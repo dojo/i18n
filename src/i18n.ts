@@ -390,7 +390,7 @@ export function ready(): Promise<void> {
  */
 export function switchLocale(locale: string): Promise<void> {
 	const previous = rootLocale;
-	rootLocale = normalizeLocale(locale);
+	rootLocale = locale ? normalizeLocale(locale) : '';
 
 	return ready().then(() => {
 		if (previous !== rootLocale) {

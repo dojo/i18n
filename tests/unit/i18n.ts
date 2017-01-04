@@ -110,7 +110,7 @@ registerSuite({
 		},
 
 		'assert unsupported locale'(this: any) {
-			const cached = getCachedMessages(bundle, 'bogus-locale');
+			const cached = getCachedMessages(bundle, 'un-SU-pported');
 			assert.deepEqual(cached, bundle.messages, 'Default messages returned for unsupported locale.');
 		},
 
