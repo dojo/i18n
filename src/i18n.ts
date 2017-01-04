@@ -4,11 +4,11 @@ import has from 'dojo-core/has';
 import global from 'dojo-core/global';
 import { assign } from 'dojo-core/lang';
 import load from 'dojo-core/load';
-import { Handle } from 'dojo-core/interfaces';
+import { Handle } from 'dojo-interfaces/core';
 import Map from 'dojo-shim/Map';
 import Observable, { Observer, Subscription, SubscriptionObserver } from 'dojo-shim/Observable';
 import Promise from 'dojo-shim/Promise';
-import * as Globalize from 'globalize/globalize/message';
+import * as Globalize from 'globalize/dist/globalize/message';
 import loadCldrData from './cldr/load';
 import { generateLocales, normalizeLocale } from './util';
 
