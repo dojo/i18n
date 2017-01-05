@@ -1,7 +1,7 @@
-import * as Globalize from 'globalize/globalize';
-import 'globalize/globalize/currency';
-import 'globalize/globalize/number';
-import 'globalize/globalize/plural';
+import * as Globalize from 'globalize';
+import 'globalize/dist/globalize/currency';
+import 'globalize/dist/globalize/number';
+import 'globalize/dist/globalize/plural';
 import i18n from './i18n';
 
 export interface CommonNumberFormatterOptions {

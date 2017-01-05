@@ -1,6 +1,6 @@
-import * as Globalize from 'globalize/globalize';
-import 'globalize/globalize/date';
-import 'globalize/globalize/relative-time';
+import * as Globalize from 'globalize';
+import 'globalize/dist/globalize/date';
+import 'globalize/dist/globalize/relative-time';
 import i18n from './i18n';
 
 export type DateFormatterOptions = null | {

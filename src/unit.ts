@@ -1,5 +1,5 @@
-import * as Globalize from 'globalize/globalize';
-import 'globalize/globalize/unit';
+import * as Globalize from 'globalize';
+import 'globalize/dist/globalize/unit';
 import i18n from './i18n';
 import { NumberFormatterOptions } from './number';
 
