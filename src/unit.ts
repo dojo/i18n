@@ -1,7 +1,6 @@
-import * as Globalize from 'globalize';
 import 'globalize/dist/globalize/unit';
-import i18n from './i18n';
 import { NumberFormatterOptions } from './number';
+import getGlobalize, { normalizeOptions } from './util/globalize';
 
 export type UnitFormatterOptions = null | {
 	/**
@@ -16,23 +15,6 @@ export type UnitFormatterOptions = null | {
 }
 
 export type UnitLength = 'long' | 'narrow' | 'short';
-
-/**
- * @private
- * Return a Globalize.js object for the specified locale. If no locale is provided, then the root
- * locale is assumed.
- */
-function getGlobalize(locale?: string) {
-	return locale && locale !== i18n.locale ? new Globalize(locale) : Globalize;
-}
-
-/**
- * @private
- * Coerce the formatter options into a value consumable by the underlying Globalize.js method.
- */
-function normalizeOptions(options?: any): any {
-	return options === null ? undefined : options;
-}
 
 /**
  * Return a string formatted for the specified number, unit, and options/locale.

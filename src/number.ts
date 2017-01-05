@@ -1,8 +1,7 @@
-import * as Globalize from 'globalize';
 import 'globalize/dist/globalize/currency';
 import 'globalize/dist/globalize/number';
 import 'globalize/dist/globalize/plural';
-import i18n from './i18n';
+import getGlobalize, { normalizeOptions } from './util/globalize';
 
 export interface CommonNumberFormatterOptions {
 	/**
@@ -93,23 +92,6 @@ export type PluralGroup = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
 export type PluralTypeOption = 'cardinal' | 'ordinal';
 
 export type RoundNumberOption =  'ceil' | 'floor' | 'round' | 'truncate';
-
-/**
- * @private
- * Return a Globalize.js object for the specified locale. If no locale is provided, then the root
- * locale is assumed.
- */
-function getGlobalize(locale?: string) {
-	return locale && locale !== i18n.locale ? new Globalize(locale) : Globalize;
-}
-
-/**
- * @private
- * Coerce the formatter options into a value consumable by the underlying Globalize.js method.
- */
-function normalizeOptions(options?: any): any {
-	return options === null ? undefined : options;
-}
 
 /**
  * Format a number as the specified currency, according to the specified configuration and or locale.

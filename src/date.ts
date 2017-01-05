@@ -1,7 +1,6 @@
-import * as Globalize from 'globalize';
 import 'globalize/dist/globalize/date';
 import 'globalize/dist/globalize/relative-time';
-import i18n from './i18n';
+import getGlobalize, { normalizeOptions } from './util/globalize';
 
 export type DateFormatterOptions = null | {
 	/**
@@ -37,23 +36,6 @@ export type RelativeTimeFormatterOptions = null | {
 }
 
 export type RelativeTimeLength = 'short' | 'narrow';
-
-/**
- * @private
- * Return a Globalize.js object for the specified locale. If no locale is provided, then the root
- * locale is assumed.
- */
-function getGlobalize(locale?: string) {
-	return locale && locale !== i18n.locale ? new Globalize(locale) : Globalize;
-}
-
-/**
- * @private
- * Coerce the formatter options into a value consumable by the underlying Globalize.js method.
- */
-function normalizeOptions(options?: any): any {
-	return options === null ? undefined : options;
-}
 
 /**
  * Format a date according to the specified options for the specified or current locale.

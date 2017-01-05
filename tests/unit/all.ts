@@ -4,4 +4,5 @@ import './i18n';
 import './main';
 import './number';
 import './unit';
-import './util';
+import './util/globalize';
+import './util/main';

@@ -51,7 +51,7 @@ import {
 import {
 	generateLocales,
 	normalizeLocale
-} from './util';
+} from './util/main';
 import loadCldrData from './cldr/load';
 
 export default i18n;
