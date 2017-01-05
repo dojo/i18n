@@ -280,7 +280,7 @@ export function getMessageFormatter(bundlePath: string, key: string, locale?: st
 function i18n<T extends Messages>(bundle: Bundle<T>, locale?: string): Promise<T> {
 	const { bundlePath, locales, messages } = bundle;
 	const path = bundlePath.replace(/\/$/, '');
-	const currentLocale = locale || getRootLocale();
+	const currentLocale = locale ? normalizeLocale(locale) : getRootLocale();
 
 	try {
 		validatePath(path);
