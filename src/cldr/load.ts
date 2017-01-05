@@ -6,7 +6,7 @@ import load from 'dojo-core/load';
 import coreRequest, { Response } from 'dojo-core/request';
 import has from 'dojo-has/has';
 import Promise from 'dojo-shim/Promise';
-import * as Globalize from 'globalize/dist/globalize';
+import * as Globalize from 'globalize';
 import supportedMain from './locales';
 import { generateLocales } from '../util';
 

@@ -61,7 +61,7 @@ export const loaderOptions = {
 		{ name: 'dojo-core', location: 'node_modules/dojo-core' },
 		{ name: 'dojo-has', location: 'node_modules/dojo-has' },
 		{ name: 'dojo-shim', location: 'node_modules/dojo-shim' },
-		{ name: 'globalize', location: 'node_modules/globalize' },
+		{ name: 'globalize', location: 'node_modules/globalize', main: 'dist/globalize' },
 		{ name: 'sinon', location: 'node_modules/sinon/pkg', main: 'sinon' }
 	],
 	map: {
