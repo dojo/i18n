@@ -79,18 +79,18 @@ const getJson: (paths: string[]) => Promise<CldrData[]> = (function () {
 			return load(require, ...paths);
 		};
 	}
-	else if (typeof define === 'function' && define.amd) {
-		return function (paths: string[]): Promise<CldrData[]> {
-			return Promise.all(paths.map((path: string): Promise<CldrData> => {
-				return <Promise<CldrData>> coreRequest.get(require.toUrl(path) + '.json', {
-					responseType: 'json'
-				}).then((response: Response<CldrData>) => response.data as CldrData);
-			}));
-		};
-	}
-	else {
-		throw new Error('Unknown loader');
-	}
+
+	return function (paths: string[]): Promise<CldrData[]> {
+		return Promise.all(paths.map((path: string): Promise<CldrData> => {
+			if (typeof require.toUrl === 'function') {
+				path = require.toUrl(path);
+			}
+
+			return <Promise<CldrData>> coreRequest.get(`${path}.json`, {
+				responseType: 'json'
+			}).then((response: Response<CldrData>) => response.data as CldrData);
+		}));
+	};
 })();
 
 /**
