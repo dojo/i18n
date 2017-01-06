@@ -62,7 +62,7 @@ export interface Messages {
 	[key: string]: string;
 }
 
-const PATH_SEPARATOR: string = has('host-node') ? global.require('path').sep : '/';
+const PATH_SEPARATOR: string = has('host-node') ? require('path').sep : '/';
 const VALID_PATH_PATTERN = new RegExp(PATH_SEPARATOR + '[^' + PATH_SEPARATOR + ']+$');
 const bundleMap = new Map<string, Map<string, Messages>>();
 const formatterMap = new Map<string, MessageFormatter>();
@@ -81,7 +81,7 @@ const loadLocaleBundles = (function () {
 	}
 
 	return function<T extends Messages>(paths: string[]): Promise<T[]> {
-		return load(global.require, ...paths).then((modules: LocaleModule<T>[]) => {
+		return load(<any> require, ...paths).then((modules: LocaleModule<T>[]) => {
 			return mapMessages(modules);
 		});
 	};
@@ -416,7 +416,7 @@ export const systemLocale: string = (function () {
 		systemLocale = navigator.language || navigator.userLanguage;
 	}
 	else if (has('host-node')) {
-		systemLocale = global.process.env.LANG;
+		systemLocale = process.env.LANG;
 	}
 	return normalizeLocale(systemLocale);
 })();
