@@ -3,7 +3,7 @@ import 'globalize/dist/globalize/date';
 import 'globalize/dist/globalize/relative-time';
 import getGlobalize, { resolveFormatterArguments } from './util/globalize';
 
-export type DateFormatterOptions = null | {
+export type DateFormatterOptions = {
 	/**
 	 * String value indicating a skeleton, eg. { skeleton: "GyMMMd" }.
 	 * Skeleton provides a more flexible formatting mechanism than the predefined list full, long, medium, or short represented by date, time, or datetime.
@@ -29,7 +29,7 @@ export type DateFormatterOptions = null | {
 
 export type DateLength = 'short' | 'medium' | 'long' | 'full';
 
-export type RelativeTimeFormatterOptions = null | {
+export type RelativeTimeFormatterOptions = {
 	/**
 	 * eg. "short" or "narrow". Or falsy for default long form
 	 */

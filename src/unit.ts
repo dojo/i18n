@@ -3,7 +3,7 @@ import 'globalize/dist/globalize/unit';
 import { NumberFormatterOptions } from './number';
 import getGlobalize, { resolveFormatterArguments } from './util/globalize';
 
-export type UnitFormatterOptions = null | {
+export type UnitFormatterOptions = {
 	/**
 	 * form: [String] eg. "long", "short" or "narrow".
 	 */

@@ -56,7 +56,7 @@ export interface CommonNumberFormatterOptions {
 	useGrouping?: boolean;
 }
 
-export type CurrencyFormatterOptions = null | CommonNumberFormatterOptions & {
+export type CurrencyFormatterOptions = CommonNumberFormatterOptions & {
 	/**
 	 * symbol (default), accounting, code or name.
 	 */
@@ -65,14 +65,14 @@ export type CurrencyFormatterOptions = null | CommonNumberFormatterOptions & {
 
 export type CurrencyStyleOption = 'accounting' | 'code' | 'name' | 'symbol';
 
-export type NumberFormatterOptions = null | CommonNumberFormatterOptions & {
+export type NumberFormatterOptions = CommonNumberFormatterOptions & {
 	/**
 	 * decimal (default), or percent
 	 */
 	style?: NumberStyleOption;
 }
 
-export type NumberParserOptions = null | {
+export type NumberParserOptions = {
 	/**
 	 * decimal (default), or percent.
 	 */
@@ -81,7 +81,7 @@ export type NumberParserOptions = null | {
 
 export type NumberStyleOption = 'decimal' | 'percent';
 
-export type PluralGeneratorOptions = null | {
+export type PluralGeneratorOptions = {
 	/**
 	 * cardinal (default), or ordinal.
 	 */
@@ -215,11 +215,11 @@ export function getNumberParser(...args: any[]): (value: string) => number {
  * @return
  * A function that accepts a number and returns the corresponding plural group.
  */
-export function getPluralGenerator(options?: PluralGeneratorOptions, locale?: string): (value: number) => PluralGroup;
-export function getPluralGenerator(locale?: string): (value: number) => PluralGroup;
-export function getPluralGenerator(...args: any[]): (value: number) => PluralGroup {
+export function getPluralGenerator(options?: PluralGeneratorOptions, locale?: string): (value: number) => string;
+export function getPluralGenerator(locale?: string): (value: number) => string;
+export function getPluralGenerator(...args: any[]): (value: number) => string {
 	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
-	return getGlobalize(locale).pluralGenerator(options) as (value: number) => PluralGroup;
+	return getGlobalize(locale).pluralGenerator(options) as (value: number) => string;
 }
 
 /**
@@ -260,9 +260,9 @@ export function parseNumber(value: string, ...args: any[]): number {
  * @return
  * The plural group.
  */
-export function pluralize(value: number, options?: PluralGeneratorOptions, locale?: string): PluralGroup;
-export function pluralize(value: number, locale?: string): PluralGroup;
-export function pluralize(value: number, ...args: any[]): PluralGroup {
+export function pluralize(value: number, options?: PluralGeneratorOptions, locale?: string): string;
+export function pluralize(value: number, locale?: string): string;
+export function pluralize(value: number, ...args: any[]): string {
 	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
-	return getGlobalize(locale).plural(value, options) as PluralGroup;
+	return getGlobalize(locale).plural(value, options);
 }
