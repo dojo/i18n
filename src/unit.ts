@@ -1,3 +1,4 @@
+import 'globalize';
 import 'globalize/dist/globalize/unit';
 import { NumberFormatterOptions } from './number';
 import getGlobalize, { normalizeOptions } from './util/globalize';

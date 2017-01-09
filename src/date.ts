@@ -1,3 +1,4 @@
+import 'globalize';
 import 'globalize/dist/globalize/date';
 import 'globalize/dist/globalize/relative-time';
 import getGlobalize, { normalizeOptions } from './util/globalize';

@@ -1,3 +1,4 @@
+import 'globalize';
 import 'globalize/dist/globalize/currency';
 import 'globalize/dist/globalize/number';
 import 'globalize/dist/globalize/plural';
