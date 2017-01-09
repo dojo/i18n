@@ -36,7 +36,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(formatCurrency(12.37, 'EUR', null, 'fr'), '12,37\u00A0€');
+			assert.strictEqual(formatCurrency(12.37, 'EUR', 'fr'), '12,37\u00A0€');
 			assert.strictEqual(formatCurrency(12.37, 'EUR', { style: 'accounting' }, 'fr'), '12,37\u00A0€');
 			assert.strictEqual(formatCurrency(12.37, 'EUR', { style: 'code' }, 'fr'), '12,37 EUR');
 			assert.strictEqual(formatCurrency(12.37, 'EUR', { style: 'name' }, 'fr'), '12,37 euros');
@@ -74,7 +74,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(formatNumber(12.37, null, 'fr'), '12,37');
+			assert.strictEqual(formatNumber(12.37, 'fr'), '12,37');
 			assert.strictEqual(formatNumber(12.37, { style: 'percent' }, 'fr'), '1\u00A0237\u00A0%');
 			assert.strictEqual(formatNumber(12.37, { minimumIntegerDigits: 3 }, 'fr'), '012,37');
 			assert.strictEqual(formatNumber(12.37, { minimumFractionDigits: 3 }, 'fr'), '12,370');
@@ -98,7 +98,7 @@ registerSuite({
 				round: 'truncate'
 			}, 'fr'), '12,3');
 
-			assert.strictEqual(formatNumber(1234567890, null, 'fr'), '1\u00A0234\u00A0567\u00A0890');
+			assert.strictEqual(formatNumber(1234567890, 'fr'), '1\u00A0234\u00A0567\u00A0890');
 			assert.strictEqual(formatNumber(1234567890, { useGrouping: false }, 'fr'), '1234567890');
 		}
 	},
@@ -112,7 +112,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(getCurrencyFormatter('EUR', null, 'fr')(12.37), '12,37\u00A0€');
+			assert.strictEqual(getCurrencyFormatter('EUR', 'fr')(12.37), '12,37\u00A0€');
 			assert.strictEqual(getCurrencyFormatter('EUR', { style: 'accounting' }, 'fr')(12.37), '12,37\u00A0€');
 			assert.strictEqual(getCurrencyFormatter('EUR', { style: 'code' }, 'fr')(12.37), '12,37 EUR');
 			assert.strictEqual(getCurrencyFormatter('EUR', { style: 'name' }, 'fr')(12.37), '12,37 euros');
@@ -150,7 +150,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(getNumberFormatter(null, 'fr')(12.37), '12,37');
+			assert.strictEqual(getNumberFormatter('fr')(12.37), '12,37');
 			assert.strictEqual(getNumberFormatter({ style: 'percent' }, 'fr')(12.37), '1\u00A0237\u00A0%');
 			assert.strictEqual(getNumberFormatter({ minimumIntegerDigits: 3 }, 'fr')(12.37), '012,37');
 			assert.strictEqual(getNumberFormatter({ minimumFractionDigits: 3 }, 'fr')(12.37), '12,370');
@@ -174,7 +174,7 @@ registerSuite({
 				round: 'truncate'
 			}, 'fr')(12.33), '12,3');
 
-			assert.strictEqual(getNumberFormatter(null, 'fr')(1234567890), '1\u00A0234\u00A0567\u00A0890');
+			assert.strictEqual(getNumberFormatter('fr')(1234567890), '1\u00A0234\u00A0567\u00A0890');
 			assert.strictEqual(getNumberFormatter({ useGrouping: false }, 'fr')(1234567890), '1234567890');
 		}
 	},
@@ -187,7 +187,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(getNumberParser(null, 'fr')('12,37'), 12.37);
+			assert.strictEqual(getNumberParser('fr')('12,37'), 12.37);
 			assert.strictEqual(getNumberParser({ style: 'decimal' }, 'fr')('12,37'), 12.37);
 			assert.strictEqual(getNumberParser({ style: 'percent' }, 'fr')('1\u00A0237\u00A0%'), 12.37);
 		}
@@ -209,9 +209,9 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(getPluralGenerator(null, 'fr')(0), 'one');
-			assert.strictEqual(getPluralGenerator(null, 'fr')(1), 'one');
-			assert.strictEqual(getPluralGenerator(null, 'fr')(2), 'other');
+			assert.strictEqual(getPluralGenerator('fr')(0), 'one');
+			assert.strictEqual(getPluralGenerator('fr')(1), 'one');
+			assert.strictEqual(getPluralGenerator('fr')(2), 'other');
 
 			assert.strictEqual(getPluralGenerator({ type: 'cardinal' }, 'fr')(0), 'one');
 			assert.strictEqual(getPluralGenerator({ type: 'cardinal' }, 'fr')(1), 'one');
@@ -231,7 +231,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(parseNumber('12,37', null, 'fr'), 12.37);
+			assert.strictEqual(parseNumber('12,37', 'fr'), 12.37);
 			assert.strictEqual(parseNumber('12,37', { style: 'decimal' }, 'fr'), 12.37);
 			assert.strictEqual(parseNumber('1\u00A0237\u00A0%', { style: 'percent' }, 'fr'), 12.37);
 		}
@@ -253,9 +253,9 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(pluralize(0, null, 'fr'), 'one');
-			assert.strictEqual(pluralize(1, null, 'fr'), 'one');
-			assert.strictEqual(pluralize(2, null, 'fr'), 'other');
+			assert.strictEqual(pluralize(0, 'fr'), 'one');
+			assert.strictEqual(pluralize(1, 'fr'), 'one');
+			assert.strictEqual(pluralize(2, 'fr'), 'other');
 
 			assert.strictEqual(pluralize(0, { type: 'cardinal' }, 'fr'), 'one');
 			assert.strictEqual(pluralize(1, { type: 'cardinal' }, 'fr'), 'one');

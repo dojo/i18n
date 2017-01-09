@@ -1,7 +1,7 @@
 import 'globalize';
 import 'globalize/dist/globalize/date';
 import 'globalize/dist/globalize/relative-time';
-import getGlobalize, { normalizeOptions } from './util/globalize';
+import getGlobalize, { resolveFormatterArguments } from './util/globalize';
 
 export type DateFormatterOptions = null | {
 	/**
@@ -53,8 +53,11 @@ export type RelativeTimeLength = 'short' | 'narrow';
  * @return
  * The formatted date string.
  */
-export function formatDate(value: Date, options?: DateFormatterOptions, locale?: string): string {
-	return getGlobalize(locale).formatDate(value, normalizeOptions(options));
+export function formatDate(value: Date, options?: DateFormatterOptions, locale?: string): string;
+export function formatDate(value: Date, locale?: string): string;
+export function formatDate(value: Date, ...args: any[]): string {
+	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).formatDate(value, options);
 }
 
 /**
@@ -74,8 +77,11 @@ export function formatDate(value: Date, options?: DateFormatterOptions, locale?:
  * @param locale
  * An optional locale. Defaults to the current locale.
  */
-export function formatRelativeTime(value: number, unit: string, options?: RelativeTimeFormatterOptions, locale?: string): string {
-	return getGlobalize(locale).formatRelativeTime(value, unit, normalizeOptions(options));
+export function formatRelativeTime(value: number, unit: string, options?: RelativeTimeFormatterOptions, locale?: string): string;
+export function formatRelativeTime(value: number, unit: string, locale?: string): string;
+export function formatRelativeTime(value: number, unit: string, ...args: any[]): string {
+	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).formatRelativeTime(value, unit, options);
 }
 
 /**
@@ -91,8 +97,11 @@ export function formatRelativeTime(value: number, unit: string, options?: Relati
  * @return
  * A function that accepts a date and returns a formatted date string.
  */
-export function getDateFormatter(options?: DateFormatterOptions, locale?: string): (value: Date) => string {
-	return getGlobalize(locale).dateFormatter(normalizeOptions(options));
+export function getDateFormatter(options?: DateFormatterOptions, locale?: string): (value: Date) => string;
+export function getDateFormatter(locale?: string): (value: Date) => string;
+export function getDateFormatter(...args: any[]): (value: Date) => string {
+	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).dateFormatter(options);
 }
 
 /**
@@ -107,8 +116,11 @@ export function getDateFormatter(options?: DateFormatterOptions, locale?: string
  * @return
  * A function that accepts a string and returns a date object.
  */
-export function getDateParser(options?: DateFormatterOptions, locale?: string): (value: string) => Date {
-	return getGlobalize(locale).dateParser(normalizeOptions(options));
+export function getDateParser(options?: DateFormatterOptions, locale?: string): (value: string) => Date;
+export function getDateParser(locale?: string): (value: string) => Date;
+export function getDateParser(...args: any[]): (value: string) => Date {
+	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).dateParser(options);
 }
 
 /**
@@ -128,8 +140,11 @@ export function getDateParser(options?: DateFormatterOptions, locale?: string): 
  * A function that accepts a relative time number and returns a formatted string. Positive numbers indicate future
  * events (e.g., "in 2 days") while negative numbers represent past events (e.g., "1 day ago").
  */
-export function getRelativeTimeFormatter(unit: string, options?: RelativeTimeFormatterOptions, locale?: string): (value: number) => string {
-	return getGlobalize(locale).relativeTimeFormatter(unit, normalizeOptions(options));
+export function getRelativeTimeFormatter(unit: string, options?: RelativeTimeFormatterOptions, locale?: string): (value: number) => string;
+export function getRelativeTimeFormatter(unit: string, locale?: string): (value: number) => string;
+export function getRelativeTimeFormatter(unit: string, ...args: any[]): (value: number) => string {
+	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).relativeTimeFormatter(unit, options);
 }
 
 /**
@@ -147,6 +162,9 @@ export function getRelativeTimeFormatter(unit: string, options?: RelativeTimeFor
  * @return
  * The formatted date.
  */
-export function parseDate(value: string, options?: DateFormatterOptions, locale?: string): Date {
-	return getGlobalize(locale).parseDate(value, normalizeOptions(options));
+export function parseDate(value: string, options?: DateFormatterOptions, locale?: string): Date;
+export function parseDate(value: string, locale?: string): Date;
+export function parseDate(value: string, ...args: any[]): Date {
+	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).parseDate(value, options);
 }

@@ -2,7 +2,7 @@ import 'globalize';
 import 'globalize/dist/globalize/currency';
 import 'globalize/dist/globalize/number';
 import 'globalize/dist/globalize/plural';
-import getGlobalize, { normalizeOptions } from './util/globalize';
+import getGlobalize, { resolveFormatterArguments } from './util/globalize';
 
 export interface CommonNumberFormatterOptions {
 	/**
@@ -112,8 +112,11 @@ export type RoundNumberOption =  'ceil' | 'floor' | 'round' | 'truncate';
  * @return
  * The formatted currency string.
  */
-export function formatCurrency(value: number, currency: string, options?: CurrencyFormatterOptions, locale?: string): string {
-	return getGlobalize(locale).formatCurrency(value, currency, normalizeOptions(options));
+export function formatCurrency(value: number, currency: string, options?: CurrencyFormatterOptions, locale?: string): string;
+export function formatCurrency(value: number, currency: string, locale?: string): string;
+export function formatCurrency(value: number, currency: string, ...args: any[]): string {
+	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).formatCurrency(value, currency, options);
 }
 
 /**
@@ -131,8 +134,11 @@ export function formatCurrency(value: number, currency: string, options?: Curren
  * @return
  * The formatted number string.
  */
-export function formatNumber(value: number, options?: NumberFormatterOptions, locale?: string): string {
-	return getGlobalize(locale).formatNumber(value, normalizeOptions(options));
+export function formatNumber(value: number, options?: NumberFormatterOptions, locale?: string): string;
+export function formatNumber(value: number, locale?: string): string;
+export function formatNumber(value: number, ...args: any[]): string {
+	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).formatNumber(value, options);
 }
 
 /**
@@ -151,8 +157,11 @@ export function formatNumber(value: number, options?: NumberFormatterOptions, lo
  * @return
  * A function that accepts a number and returns a formatted currency string.
  */
-export function getCurrencyFormatter(currency: string, options?: CurrencyFormatterOptions, locale?: string): (value: number) => string {
-	return getGlobalize(locale).currencyFormatter(currency, normalizeOptions(options));
+export function getCurrencyFormatter(currency: string, options?: CurrencyFormatterOptions, locale?: string): (value: number) => string;
+export function getCurrencyFormatter(currency: string, locale?: string): (value: number) => string;
+export function getCurrencyFormatter(currency: string, ...args: any[]): (value: number) => string {
+	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).currencyFormatter(currency, options);
 }
 
 /**
@@ -167,8 +176,11 @@ export function getCurrencyFormatter(currency: string, options?: CurrencyFormatt
  * @return
  * A function that accepts a number and returns a formatted string.
  */
-export function getNumberFormatter(options?: NumberFormatterOptions, locale?: string): (value: number) => string {
-	return getGlobalize(locale).numberFormatter(normalizeOptions(options));
+export function getNumberFormatter(options?: NumberFormatterOptions, locale?: string): (value: number) => string;
+export function getNumberFormatter(locale?: string): (value: number) => string;
+export function getNumberFormatter(...args: any[]): (value: number) => string {
+	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).numberFormatter(options);
 }
 
 /**
@@ -183,8 +195,11 @@ export function getNumberFormatter(options?: NumberFormatterOptions, locale?: st
  * @return
  * The parsed number.
  */
-export function getNumberParser(options?: NumberFormatterOptions, locale?: string): (value: string) => number {
-	return getGlobalize(locale).numberParser(normalizeOptions(options));
+export function getNumberParser(options?: NumberFormatterOptions, locale?: string): (value: string) => number;
+export function getNumberParser(locale?: string): (value: string) => number;
+export function getNumberParser(...args: any[]): (value: string) => number {
+	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).numberParser(options);
 }
 
 /**
@@ -200,8 +215,11 @@ export function getNumberParser(options?: NumberFormatterOptions, locale?: strin
  * @return
  * A function that accepts a number and returns the corresponding plural group.
  */
-export function getPluralGenerator(options?: PluralGeneratorOptions, locale?: string): (value: number) => PluralGroup {
-	return getGlobalize(locale).pluralGenerator(normalizeOptions(options)) as (value: number) => PluralGroup;
+export function getPluralGenerator(options?: PluralGeneratorOptions, locale?: string): (value: number) => PluralGroup;
+export function getPluralGenerator(locale?: string): (value: number) => PluralGroup;
+export function getPluralGenerator(...args: any[]): (value: number) => PluralGroup {
+	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).pluralGenerator(options) as (value: number) => PluralGroup;
 }
 
 /**
@@ -219,8 +237,11 @@ export function getPluralGenerator(options?: PluralGeneratorOptions, locale?: st
  * @return
  * A function that accepts a string and returns a number.
  */
-export function parseNumber(value: string, options?: NumberFormatterOptions, locale?: string): number {
-	return getGlobalize(locale).parseNumber(value, normalizeOptions(options));
+export function parseNumber(value: string, options?: NumberFormatterOptions, locale?: string): number;
+export function parseNumber(value: string, locale?: string): number;
+export function parseNumber(value: string, ...args: any[]): number {
+	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).parseNumber(value, options);
 }
 
 /**
@@ -239,6 +260,9 @@ export function parseNumber(value: string, options?: NumberFormatterOptions, loc
  * @return
  * The plural group.
  */
-export function pluralize(value: number, options?: PluralGeneratorOptions, locale?: string): PluralGroup {
-	return getGlobalize(locale).plural(value, normalizeOptions(options)) as PluralGroup;
+export function pluralize(value: number, options?: PluralGeneratorOptions, locale?: string): PluralGroup;
+export function pluralize(value: number, locale?: string): PluralGroup;
+export function pluralize(value: number, ...args: any[]): PluralGroup {
+	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+	return getGlobalize(locale).plural(value, options) as PluralGroup;
 }

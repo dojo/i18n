@@ -3,7 +3,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import loadCldrData from '../../../src/cldr/load';
 import { switchLocale, systemLocale } from '../../../src/i18n';
-import getGlobalize, { normalizeOptions } from '../../../src/util/globalize';
+import getGlobalize, { resolveFormatterArguments } from '../../../src/util/globalize';
 
 registerSuite({
 	name: 'util/globalize',
@@ -25,13 +25,15 @@ registerSuite({
 		assert.notEqual(getGlobalize('fr'), Globalize, 'The main globalize object is not returned.');
 	},
 
-	normalizeOptions() {
-		assert.isUndefined(normalizeOptions());
-		assert.isUndefined(normalizeOptions(null));
-		assert.strictEqual(normalizeOptions(12), 12);
-		assert.strictEqual(normalizeOptions('full'), 'full');
-
-		const options = { value: new Date() };
-		assert.strictEqual(normalizeOptions(options), options);
+	resolveFormatterArguments() {
+		assert.deepEqual(resolveFormatterArguments('en'), { locale: 'en' });
+		assert.deepEqual(resolveFormatterArguments({ time: 'full' }, 'en'), {
+			locale: 'en',
+			options: { time: 'full' }
+		});
+		assert.deepEqual(resolveFormatterArguments({ time: 'full' }), {
+			options: { time: 'full' }
+		});
+		assert.deepEqual(resolveFormatterArguments(), {});
 	}
 });

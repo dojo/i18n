@@ -128,7 +128,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			const formatter = getDateFormatter(null, 'fr');
+			const formatter = getDateFormatter('fr');
 			const date = new Date(1815, 11, 10);
 			assert.strictEqual(formatter(date), '10/12/1815');
 		},
@@ -176,7 +176,7 @@ registerSuite({
 
 		'assert with a locale'() {
 			assert.strictEqual(
-				getDateParser(null, 'fr')('10/12/1815').toISOString(),
+				getDateParser('fr')('10/12/1815').toISOString(),
 				new Date(1815, 11, 10).toISOString()
 			);
 		},
@@ -294,7 +294,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(formatDate(new Date(1815, 11, 10), null, 'fr'), '10/12/1815');
+			assert.strictEqual(formatDate(new Date(1815, 11, 10), 'fr'), '10/12/1815');
 		},
 
 		'assert options': (function () {
@@ -336,10 +336,10 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(formatRelativeTime(-1, 'week', null, 'fr'), 'la semaine dernière');
-			assert.strictEqual(formatRelativeTime(-3, 'week', null, 'fr'), 'il y a 3 semaines');
-			assert.strictEqual(formatRelativeTime(1, 'week', null, 'fr'), 'la semaine prochaine');
-			assert.strictEqual(formatRelativeTime(3, 'week', null, 'fr'), 'dans 3 semaines');
+			assert.strictEqual(formatRelativeTime(-1, 'week', 'fr'), 'la semaine dernière');
+			assert.strictEqual(formatRelativeTime(-3, 'week', 'fr'), 'il y a 3 semaines');
+			assert.strictEqual(formatRelativeTime(1, 'week', 'fr'), 'la semaine prochaine');
+			assert.strictEqual(formatRelativeTime(3, 'week', 'fr'), 'dans 3 semaines');
 		},
 
 		'assert options': {
@@ -379,7 +379,7 @@ registerSuite({
 
 		'assert with a locale'() {
 			assert.strictEqual(
-				parseDate('10/12/1815', null, 'fr').toISOString(),
+				parseDate('10/12/1815', 'fr').toISOString(),
 				new Date(1815, 11, 10).toISOString()
 			);
 		},
@@ -499,7 +499,7 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			const formatter = getRelativeTimeFormatter('week', null, 'fr');
+			const formatter = getRelativeTimeFormatter('week', 'fr');
 			assert.strictEqual(formatter(-1), 'la semaine dernière');
 			assert.strictEqual(formatter(-3), 'il y a 3 semaines');
 			assert.strictEqual(formatter(1), 'la semaine prochaine');

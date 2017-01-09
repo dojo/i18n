@@ -35,8 +35,8 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(formatUnit(1, 'meter', null, 'fr'), '1 mètre');
-			assert.strictEqual(formatUnit(1000, 'meter', null, 'fr'), '1\u00A0000 mètres');
+			assert.strictEqual(formatUnit(1, 'meter', 'fr'), '1 mètre');
+			assert.strictEqual(formatUnit(1000, 'meter', 'fr'), '1\u00A0000 mètres');
 			assert.strictEqual(formatUnit(1, 'meter', { form: 'long' }, 'fr'), '1 mètre');
 			assert.strictEqual(formatUnit(1000, 'meter', { form: 'long' }, 'fr'), '1\u00A0000 mètres');
 			assert.strictEqual(formatUnit(1, 'meter', { form: 'short' }, 'fr'), '1 m');
@@ -65,8 +65,8 @@ registerSuite({
 		},
 
 		'assert with a locale'() {
-			assert.strictEqual(getUnitFormatter('meter', null, 'fr')(1), '1 mètre');
-			assert.strictEqual(getUnitFormatter('meter', null, 'fr')(1000), '1\u00A0000 mètres');
+			assert.strictEqual(getUnitFormatter('meter', 'fr')(1), '1 mètre');
+			assert.strictEqual(getUnitFormatter('meter', 'fr')(1000), '1\u00A0000 mètres');
 			assert.strictEqual(getUnitFormatter('meter', { form: 'long' }, 'fr')(1), '1 mètre');
 			assert.strictEqual(getUnitFormatter('meter', { form: 'long' }, 'fr')(1000), '1\u00A0000 mètres');
 			assert.strictEqual(getUnitFormatter('meter', { form: 'short' }, 'fr')(1), '1 m');
