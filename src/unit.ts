@@ -3,6 +3,8 @@ import 'globalize/dist/globalize/unit';
 import { NumberFormatterOptions } from './number';
 import getGlobalize from './util/globalize';
 
+export type UnitLength = 'long' | 'narrow' | 'short';
+
 export type UnitFormatterOptions = {
 	/**
 	 * form: [String] eg. "long", "short" or "narrow".
@@ -14,8 +16,6 @@ export type UnitFormatterOptions = {
 	 */
 	numberFormatter?: NumberFormatterOptions;
 }
-
-export type UnitLength = 'long' | 'narrow' | 'short';
 
 /**
  * Return a string formatted for the specified number, unit, and options/locale.

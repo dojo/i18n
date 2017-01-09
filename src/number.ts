@@ -4,6 +4,12 @@ import 'globalize/dist/globalize/number';
 import 'globalize/dist/globalize/plural';
 import getGlobalize from './util/globalize';
 
+export type CurrencyStyleOption = 'accounting' | 'code' | 'name' | 'symbol';
+export type NumberStyleOption = 'decimal' | 'percent';
+export type PluralGroup = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
+export type PluralTypeOption = 'cardinal' | 'ordinal';
+export type RoundNumberOption =  'ceil' | 'floor' | 'round' | 'truncate';
+
 export interface CommonNumberFormatterOptions {
 	/**
 	 * Non-negative integer Number value indicating the minimum integer digits to be used. Numbers will be padded with
@@ -63,8 +69,6 @@ export type CurrencyFormatterOptions = CommonNumberFormatterOptions & {
 	style?: CurrencyStyleOption;
 }
 
-export type CurrencyStyleOption = 'accounting' | 'code' | 'name' | 'symbol';
-
 export type NumberFormatterOptions = CommonNumberFormatterOptions & {
 	/**
 	 * decimal (default), or percent
@@ -79,20 +83,12 @@ export type NumberParserOptions = {
 	style?: NumberStyleOption;
 }
 
-export type NumberStyleOption = 'decimal' | 'percent';
-
 export type PluralGeneratorOptions = {
 	/**
 	 * cardinal (default), or ordinal.
 	 */
 	type?: PluralTypeOption;
 }
-
-export type PluralGroup = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
-
-export type PluralTypeOption = 'cardinal' | 'ordinal';
-
-export type RoundNumberOption =  'ceil' | 'floor' | 'round' | 'truncate';
 
 /**
  * Format a number as the specified currency, according to the specified configuration and or locale.

@@ -3,6 +3,9 @@ import 'globalize/dist/globalize/date';
 import 'globalize/dist/globalize/relative-time';
 import getGlobalize from './util/globalize';
 
+export type DateLength = 'short' | 'medium' | 'long' | 'full';
+export type RelativeTimeLength = 'short' | 'narrow';
+
 export type DateFormatterOptions = {
 	/**
 	 * String value indicating a skeleton, eg. { skeleton: "GyMMMd" }.
@@ -27,16 +30,12 @@ export type DateFormatterOptions = {
 	datetime?: DateLength;
 }
 
-export type DateLength = 'short' | 'medium' | 'long' | 'full';
-
 export type RelativeTimeFormatterOptions = {
 	/**
 	 * eg. "short" or "narrow". Or falsy for default long form
 	 */
 	form?: RelativeTimeLength;
 }
-
-export type RelativeTimeLength = 'short' | 'narrow';
 
 /**
  * Format a date according to the specified options for the specified or current locale.
