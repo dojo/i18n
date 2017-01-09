@@ -2,7 +2,7 @@ import 'globalize';
 import 'globalize/dist/globalize/currency';
 import 'globalize/dist/globalize/number';
 import 'globalize/dist/globalize/plural';
-import getGlobalize, { resolveFormatterArguments } from './util/globalize';
+import getGlobalize from './util/globalize';
 
 export interface CommonNumberFormatterOptions {
 	/**
@@ -114,8 +114,9 @@ export type RoundNumberOption =  'ceil' | 'floor' | 'round' | 'truncate';
  */
 export function formatCurrency(value: number, currency: string, options?: CurrencyFormatterOptions, locale?: string): string;
 export function formatCurrency(value: number, currency: string, locale?: string): string;
-export function formatCurrency(value: number, currency: string, ...args: any[]): string {
-	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+export function formatCurrency(value: number, currency: string, optionsOrLocale?: CurrencyFormatterOptions | string, locale?: string): string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).formatCurrency(value, currency, options);
 }
 
@@ -136,8 +137,9 @@ export function formatCurrency(value: number, currency: string, ...args: any[]):
  */
 export function formatNumber(value: number, options?: NumberFormatterOptions, locale?: string): string;
 export function formatNumber(value: number, locale?: string): string;
-export function formatNumber(value: number, ...args: any[]): string {
-	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+export function formatNumber(value: number, optionsOrLocale?: NumberFormatterOptions | string, locale?: string): string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).formatNumber(value, options);
 }
 
@@ -159,8 +161,9 @@ export function formatNumber(value: number, ...args: any[]): string {
  */
 export function getCurrencyFormatter(currency: string, options?: CurrencyFormatterOptions, locale?: string): (value: number) => string;
 export function getCurrencyFormatter(currency: string, locale?: string): (value: number) => string;
-export function getCurrencyFormatter(currency: string, ...args: any[]): (value: number) => string {
-	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+export function getCurrencyFormatter(currency: string, optionsOrLocale?: CurrencyFormatterOptions | string, locale?: string): (value: number) => string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).currencyFormatter(currency, options);
 }
 
@@ -178,8 +181,9 @@ export function getCurrencyFormatter(currency: string, ...args: any[]): (value: 
  */
 export function getNumberFormatter(options?: NumberFormatterOptions, locale?: string): (value: number) => string;
 export function getNumberFormatter(locale?: string): (value: number) => string;
-export function getNumberFormatter(...args: any[]): (value: number) => string {
-	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+export function getNumberFormatter(optionsOrLocale?: NumberFormatterOptions | string, locale?: string): (value: number) => string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).numberFormatter(options);
 }
 
@@ -197,8 +201,9 @@ export function getNumberFormatter(...args: any[]): (value: number) => string {
  */
 export function getNumberParser(options?: NumberFormatterOptions, locale?: string): (value: string) => number;
 export function getNumberParser(locale?: string): (value: string) => number;
-export function getNumberParser(...args: any[]): (value: string) => number {
-	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+export function getNumberParser(optionsOrLocale?: NumberFormatterOptions | string, locale?: string): (value: string) => number {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).numberParser(options);
 }
 
@@ -217,8 +222,9 @@ export function getNumberParser(...args: any[]): (value: string) => number {
  */
 export function getPluralGenerator(options?: PluralGeneratorOptions, locale?: string): (value: number) => string;
 export function getPluralGenerator(locale?: string): (value: number) => string;
-export function getPluralGenerator(...args: any[]): (value: number) => string {
-	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+export function getPluralGenerator(optionsOrLocale?: PluralGeneratorOptions | string, locale?: string): (value: number) => string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).pluralGenerator(options) as (value: number) => string;
 }
 
@@ -239,8 +245,9 @@ export function getPluralGenerator(...args: any[]): (value: number) => string {
  */
 export function parseNumber(value: string, options?: NumberFormatterOptions, locale?: string): number;
 export function parseNumber(value: string, locale?: string): number;
-export function parseNumber(value: string, ...args: any[]): number {
-	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+export function parseNumber(value: string, optionsOrLocale?: NumberFormatterOptions | string, locale?: string): number {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).parseNumber(value, options);
 }
 
@@ -262,7 +269,8 @@ export function parseNumber(value: string, ...args: any[]): number {
  */
 export function pluralize(value: number, options?: PluralGeneratorOptions, locale?: string): string;
 export function pluralize(value: number, locale?: string): string;
-export function pluralize(value: number, ...args: any[]): string {
-	const { options, locale } = resolveFormatterArguments(args[0], args[1]);
+export function pluralize(value: number, optionsOrLocale?: PluralGeneratorOptions | string, locale?: string): string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).plural(value, options);
 }

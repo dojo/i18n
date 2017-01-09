@@ -1,7 +1,7 @@
 import 'globalize';
 import 'globalize/dist/globalize/unit';
 import { NumberFormatterOptions } from './number';
-import getGlobalize, { resolveFormatterArguments } from './util/globalize';
+import getGlobalize from './util/globalize';
 
 export type UnitFormatterOptions = {
 	/**
@@ -37,8 +37,9 @@ export type UnitLength = 'long' | 'narrow' | 'short';
  */
 export function formatUnit(value: number, unit: string, options?: UnitFormatterOptions, locale?: string): string;
 export function formatUnit(value: number, unit: string, locale?: string): string;
-export function formatUnit(value: number, unit: string, ...args: any[]): string {
-	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+export function formatUnit(value: number, unit: string, optionsOrLocale?: UnitFormatterOptions | string, locale?: string): string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).formatUnit(value, unit, options);
 }
 
@@ -59,7 +60,8 @@ export function formatUnit(value: number, unit: string, ...args: any[]): string 
  */
 export function getUnitFormatter(unit: string, options?: UnitFormatterOptions, locale?: string): (value: number) => string;
 export function getUnitFormatter(unit: string, locale?: string): (value: number) => string;
-export function getUnitFormatter(unit: string, ...args: any[]): (value: number) => string {
-	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+export function getUnitFormatter(unit: string, optionsOrLocale?: UnitFormatterOptions | string, locale?: string): (value: number) => string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).unitFormatter(unit, options);
 }

@@ -1,7 +1,7 @@
 import 'globalize';
 import 'globalize/dist/globalize/date';
 import 'globalize/dist/globalize/relative-time';
-import getGlobalize, { resolveFormatterArguments } from './util/globalize';
+import getGlobalize from './util/globalize';
 
 export type DateFormatterOptions = {
 	/**
@@ -55,8 +55,9 @@ export type RelativeTimeLength = 'short' | 'narrow';
  */
 export function formatDate(value: Date, options?: DateFormatterOptions, locale?: string): string;
 export function formatDate(value: Date, locale?: string): string;
-export function formatDate(value: Date, ...args: any[]): string {
-	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+export function formatDate(value: Date, optionsOrLocale?: DateFormatterOptions | string, locale?: string): string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).formatDate(value, options);
 }
 
@@ -79,8 +80,9 @@ export function formatDate(value: Date, ...args: any[]): string {
  */
 export function formatRelativeTime(value: number, unit: string, options?: RelativeTimeFormatterOptions, locale?: string): string;
 export function formatRelativeTime(value: number, unit: string, locale?: string): string;
-export function formatRelativeTime(value: number, unit: string, ...args: any[]): string {
-	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+export function formatRelativeTime(value: number, unit: string, optionsOrLocale?: RelativeTimeFormatterOptions | string, locale?: string): string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).formatRelativeTime(value, unit, options);
 }
 
@@ -99,8 +101,9 @@ export function formatRelativeTime(value: number, unit: string, ...args: any[]):
  */
 export function getDateFormatter(options?: DateFormatterOptions, locale?: string): (value: Date) => string;
 export function getDateFormatter(locale?: string): (value: Date) => string;
-export function getDateFormatter(...args: any[]): (value: Date) => string {
-	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+export function getDateFormatter(optionsOrLocale?: DateFormatterOptions | string, locale?: string): (value: Date) => string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).dateFormatter(options);
 }
 
@@ -118,8 +121,9 @@ export function getDateFormatter(...args: any[]): (value: Date) => string {
  */
 export function getDateParser(options?: DateFormatterOptions, locale?: string): (value: string) => Date;
 export function getDateParser(locale?: string): (value: string) => Date;
-export function getDateParser(...args: any[]): (value: string) => Date {
-	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+export function getDateParser(optionsOrLocale?: DateFormatterOptions | string, locale?: string): (value: string) => Date {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).dateParser(options);
 }
 
@@ -142,8 +146,9 @@ export function getDateParser(...args: any[]): (value: string) => Date {
  */
 export function getRelativeTimeFormatter(unit: string, options?: RelativeTimeFormatterOptions, locale?: string): (value: number) => string;
 export function getRelativeTimeFormatter(unit: string, locale?: string): (value: number) => string;
-export function getRelativeTimeFormatter(unit: string, ...args: any[]): (value: number) => string {
-	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+export function getRelativeTimeFormatter(unit: string, optionsOrLocale?: RelativeTimeFormatterOptions | string, locale?: string): (value: number) => string {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).relativeTimeFormatter(unit, options);
 }
 
@@ -164,7 +169,8 @@ export function getRelativeTimeFormatter(unit: string, ...args: any[]): (value: 
  */
 export function parseDate(value: string, options?: DateFormatterOptions, locale?: string): Date;
 export function parseDate(value: string, locale?: string): Date;
-export function parseDate(value: string, ...args: any[]): Date {
-	const { locale, options } = resolveFormatterArguments(args[0], args[1]);
+export function parseDate(value: string, optionsOrLocale?: DateFormatterOptions | string, locale?: string): Date {
+	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
+	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
 	return getGlobalize(locale).parseDate(value, options);
 }
