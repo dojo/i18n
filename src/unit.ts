@@ -1,7 +1,7 @@
 import 'globalize';
 import 'globalize/dist/globalize/unit';
-import { NumberFormatterOptions } from './number';
-import getGlobalize from './util/globalize';
+import { NumberFormatter, NumberFormatterOptions } from './number';
+import { globalizeDelegator } from './util/globalize';
 
 export type UnitLength = 'long' | 'narrow' | 'short';
 
@@ -38,9 +38,12 @@ export type UnitFormatterOptions = {
 export function formatUnit(value: number, unit: string, options?: UnitFormatterOptions, locale?: string): string;
 export function formatUnit(value: number, unit: string, locale?: string): string;
 export function formatUnit(value: number, unit: string, optionsOrLocale?: UnitFormatterOptions | string, locale?: string): string {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).formatUnit(value, unit, options);
+	return globalizeDelegator<number, UnitFormatterOptions, string>('formatUnit', {
+		locale,
+		optionsOrLocale,
+		unit,
+		value
+	});
 }
 
 /**
@@ -58,10 +61,12 @@ export function formatUnit(value: number, unit: string, optionsOrLocale?: UnitFo
  * @return
  * A function that accepts a number and returns a string formatted according to the specified unit and options/locale.
  */
-export function getUnitFormatter(unit: string, options?: UnitFormatterOptions, locale?: string): (value: number) => string;
-export function getUnitFormatter(unit: string, locale?: string): (value: number) => string;
-export function getUnitFormatter(unit: string, optionsOrLocale?: UnitFormatterOptions | string, locale?: string): (value: number) => string {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).unitFormatter(unit, options);
+export function getUnitFormatter(unit: string, options?: UnitFormatterOptions, locale?: string): NumberFormatter;
+export function getUnitFormatter(unit: string, locale?: string): NumberFormatter;
+export function getUnitFormatter(unit: string, optionsOrLocale?: UnitFormatterOptions | string, locale?: string): NumberFormatter {
+	return globalizeDelegator<string, UnitFormatterOptions, NumberFormatter>('unitFormatter', {
+		locale,
+		optionsOrLocale,
+		unit
+	});
 }

@@ -2,7 +2,7 @@ import 'globalize';
 import 'globalize/dist/globalize/currency';
 import 'globalize/dist/globalize/number';
 import 'globalize/dist/globalize/plural';
-import getGlobalize from './util/globalize';
+import { globalizeDelegator } from './util/globalize';
 
 export type CurrencyStyleOption = 'accounting' | 'code' | 'name' | 'symbol';
 export type NumberStyleOption = 'decimal' | 'percent';
@@ -69,11 +69,25 @@ export type CurrencyFormatterOptions = CommonNumberFormatterOptions & {
 	style?: CurrencyStyleOption;
 }
 
+export interface NumberFormatter {
+	/**
+	 * Any function that formats a number as string.
+	 */
+	(value: number): string;
+}
+
 export type NumberFormatterOptions = CommonNumberFormatterOptions & {
 	/**
 	 * decimal (default), or percent
 	 */
 	style?: NumberStyleOption;
+}
+
+export interface NumberParser {
+	/**
+	 * Any function that parses a number value from a string.
+	 */
+	(value: string): number;
 }
 
 export type NumberParserOptions = {
@@ -111,9 +125,12 @@ export type PluralGeneratorOptions = {
 export function formatCurrency(value: number, currency: string, options?: CurrencyFormatterOptions, locale?: string): string;
 export function formatCurrency(value: number, currency: string, locale?: string): string;
 export function formatCurrency(value: number, currency: string, optionsOrLocale?: CurrencyFormatterOptions | string, locale?: string): string {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).formatCurrency(value, currency, options);
+	return globalizeDelegator<number, CurrencyFormatterOptions, string>('formatCurrency', {
+		locale,
+		optionsOrLocale,
+		unit: currency,
+		value
+	});
 }
 
 /**
@@ -134,9 +151,11 @@ export function formatCurrency(value: number, currency: string, optionsOrLocale?
 export function formatNumber(value: number, options?: NumberFormatterOptions, locale?: string): string;
 export function formatNumber(value: number, locale?: string): string;
 export function formatNumber(value: number, optionsOrLocale?: NumberFormatterOptions | string, locale?: string): string {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).formatNumber(value, options);
+	return globalizeDelegator<number, NumberFormatterOptions, string>('formatNumber', {
+		locale,
+		optionsOrLocale,
+		value
+	});
 }
 
 /**
@@ -155,12 +174,14 @@ export function formatNumber(value: number, optionsOrLocale?: NumberFormatterOpt
  * @return
  * A function that accepts a number and returns a formatted currency string.
  */
-export function getCurrencyFormatter(currency: string, options?: CurrencyFormatterOptions, locale?: string): (value: number) => string;
-export function getCurrencyFormatter(currency: string, locale?: string): (value: number) => string;
-export function getCurrencyFormatter(currency: string, optionsOrLocale?: CurrencyFormatterOptions | string, locale?: string): (value: number) => string {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).currencyFormatter(currency, options);
+export function getCurrencyFormatter(currency: string, options?: CurrencyFormatterOptions, locale?: string): NumberFormatter;
+export function getCurrencyFormatter(currency: string, locale?: string): NumberFormatter;
+export function getCurrencyFormatter(currency: string, optionsOrLocale?: CurrencyFormatterOptions | string, locale?: string): NumberFormatter {
+	return globalizeDelegator<string, CurrencyFormatterOptions, NumberFormatter>('currencyFormatter', {
+		locale,
+		optionsOrLocale,
+		unit: currency
+	});
 }
 
 /**
@@ -175,12 +196,13 @@ export function getCurrencyFormatter(currency: string, optionsOrLocale?: Currenc
  * @return
  * A function that accepts a number and returns a formatted string.
  */
-export function getNumberFormatter(options?: NumberFormatterOptions, locale?: string): (value: number) => string;
-export function getNumberFormatter(locale?: string): (value: number) => string;
-export function getNumberFormatter(optionsOrLocale?: NumberFormatterOptions | string, locale?: string): (value: number) => string {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).numberFormatter(options);
+export function getNumberFormatter(options?: NumberFormatterOptions, locale?: string): NumberFormatter;
+export function getNumberFormatter(locale?: string): NumberFormatter;
+export function getNumberFormatter(optionsOrLocale?: NumberFormatterOptions | string, locale?: string): NumberFormatter {
+	return globalizeDelegator<NumberFormatterOptions, NumberFormatter>('numberFormatter', {
+		locale,
+		optionsOrLocale
+	});
 }
 
 /**
@@ -195,12 +217,13 @@ export function getNumberFormatter(optionsOrLocale?: NumberFormatterOptions | st
  * @return
  * The parsed number.
  */
-export function getNumberParser(options?: NumberFormatterOptions, locale?: string): (value: string) => number;
-export function getNumberParser(locale?: string): (value: string) => number;
-export function getNumberParser(optionsOrLocale?: NumberFormatterOptions | string, locale?: string): (value: string) => number {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).numberParser(options);
+export function getNumberParser(options?: NumberFormatterOptions, locale?: string): NumberParser;
+export function getNumberParser(locale?: string): NumberParser;
+export function getNumberParser(optionsOrLocale?: NumberFormatterOptions | string, locale?: string): NumberParser {
+	return globalizeDelegator<NumberFormatterOptions, NumberParser>('numberParser', {
+		locale,
+		optionsOrLocale
+	});
 }
 
 /**
@@ -216,12 +239,13 @@ export function getNumberParser(optionsOrLocale?: NumberFormatterOptions | strin
  * @return
  * A function that accepts a number and returns the corresponding plural group.
  */
-export function getPluralGenerator(options?: PluralGeneratorOptions, locale?: string): (value: number) => string;
-export function getPluralGenerator(locale?: string): (value: number) => string;
-export function getPluralGenerator(optionsOrLocale?: PluralGeneratorOptions | string, locale?: string): (value: number) => string {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).pluralGenerator(options) as (value: number) => string;
+export function getPluralGenerator(options?: PluralGeneratorOptions, locale?: string): NumberFormatter;
+export function getPluralGenerator(locale?: string): NumberFormatter;
+export function getPluralGenerator(optionsOrLocale?: PluralGeneratorOptions | string, locale?: string): NumberFormatter {
+	return globalizeDelegator<PluralGeneratorOptions, NumberFormatter>('pluralGenerator', {
+		locale,
+		optionsOrLocale
+	});
 }
 
 /**
@@ -242,9 +266,11 @@ export function getPluralGenerator(optionsOrLocale?: PluralGeneratorOptions | st
 export function parseNumber(value: string, options?: NumberFormatterOptions, locale?: string): number;
 export function parseNumber(value: string, locale?: string): number;
 export function parseNumber(value: string, optionsOrLocale?: NumberFormatterOptions | string, locale?: string): number {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).parseNumber(value, options);
+	return globalizeDelegator<string, NumberFormatterOptions, number>('parseNumber', {
+		locale,
+		optionsOrLocale,
+		value
+	});
 }
 
 /**
@@ -266,7 +292,9 @@ export function parseNumber(value: string, optionsOrLocale?: NumberFormatterOpti
 export function pluralize(value: number, options?: PluralGeneratorOptions, locale?: string): string;
 export function pluralize(value: number, locale?: string): string;
 export function pluralize(value: number, optionsOrLocale?: PluralGeneratorOptions | string, locale?: string): string {
-	const options = typeof optionsOrLocale === 'string' ? undefined : optionsOrLocale;
-	locale = typeof optionsOrLocale === 'string' ? optionsOrLocale : locale;
-	return getGlobalize(locale).plural(value, options);
+	return globalizeDelegator<number, PluralGeneratorOptions, string>('plural', {
+		locale,
+		optionsOrLocale,
+		value
+	});
 }
