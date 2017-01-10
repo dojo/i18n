@@ -2,19 +2,19 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import global from 'dojo-core/global';
 import * as sinon from 'sinon';
-import { CldrDataResponse } from '../../../src/cldr/load';
-import * as cldrLoad from '../../../src/cldr/load';
+import { CldrDataResponse } from '../../../../src/cldr/load';
+import * as cldrLoad from '../../../../src/cldr/load';
 import loadCldrData, {
 	loadLocaleData,
 	loadSupplementalData,
 	localeCldrPaths,
 	supplementalCldrPaths
-} from '../../../src/cldr/load-webpack';
+} from '../../../../src/cldr/load/webpack';
 
 let cldrData: CldrDataResponse;
 
 registerSuite({
-	name: 'cldr/load-webpack',
+	name: 'cldr/load/webpack',
 
 	setup() {
 		return cldrLoad.default([ 'en', 'fr' ]).then((data: CldrDataResponse) => {

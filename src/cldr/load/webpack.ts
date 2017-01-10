@@ -7,7 +7,7 @@ import {
 	loadSupplementalData,
 	localeCldrPaths,
 	supplementalCldrPaths
-} from './load';
+} from '../load';
 
 declare const __cldrData__: CldrDataResponse;
 

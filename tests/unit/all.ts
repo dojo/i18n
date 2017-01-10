@@ -1,5 +1,5 @@
 import './cldr/load';
-import './cldr/load-webpack';
+import './cldr/load/webpack';
 import './date';
 import './i18n';
 import './main';
