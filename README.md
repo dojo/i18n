@@ -1,6 +1,6 @@
-# dojo-i18n
+# @dojo/i18n
 
-An internationalization library that provides locale-specific message loading, and support for locale-specific message, date, and number formatting. To support locale-specific formatters, `dojo-i18n` utilizes the most up-to-date [CLDR data](http://cldr.unicode.org) from [The Unicode Consortium](http://unicode.org).
+An internationalization library that provides locale-specific message loading, and support for locale-specific message, date, and number formatting. To support locale-specific formatters, `@dojo/i18n` utilizes the most up-to-date [CLDR data](http://cldr.unicode.org) from [The Unicode Consortium](http://unicode.org).
 
 **WARNING** This is _alpha_ software. It is not yet production ready, so you should use at your own risk.
 
@@ -10,7 +10,7 @@ The examples below are provided in TypeScript syntax. The package does work unde
 
 ### Message Bundle Loading
 
-`dojo-i18n` provides a means for loading locale-specific messages, and updating those messages when the locale changes. Each bundle has a default module that is `import`ed like any other TypeScript module. Locale-specific messages are then loaded via the `i18n` method. Every default bundle MUST provide a `bundlePath` that will be used to determine locale bundle locations, a `locales` array of supported locales, and a `messages` map of default messages. For example, suppose the module located at `nls/common.ts` contains the following contents:
+`@dojo/i18n` provides a means for loading locale-specific messages, and updating those messages when the locale changes. Each bundle has a default module that is `import`ed like any other TypeScript module. Locale-specific messages are then loaded via the `i18n` method. Every default bundle MUST provide a `bundlePath` that will be used to determine locale bundle locations, a `locales` array of supported locales, and a `messages` map of default messages. For example, suppose the module located at `nls/common.ts` contains the following contents:
 
 ```typescript
 const bundlePath = 'nls/common';
@@ -42,7 +42,7 @@ export default messages;
 Using the previous example as the default bundle, any locale-specific messages are loaded as follows:
 
 ```typescript
-import i18n, { Messages } from 'dojo-i18n/main';
+import i18n, { Messages } from '@dojo/i18n/main';
 import bundle from 'nls/common';
 
 i18n(bundle, 'fr').then(function (messages: Messages) {
@@ -77,7 +77,7 @@ console.log(madeUpLocaleMessages.goodbye); // "Goodbye"
 If need be, bundle caches can be cleared with `invalidate`. If called with a bundle path, only the messages for that particular bundle are removed from the cache. Otherwise, all messages are cleared:
 
 ```
-import i18n from 'dojo-i18n/main';
+import i18n from '@dojo/i18n/main';
 import bundle from 'nls/common';
 
 i18n(bundle, 'ar').then(() => {
@@ -95,7 +95,7 @@ The current locale can be accessed via the read-only property `i18n.locale`, whi
 The `switchLocale` method changes the root locale, and returns a promise that resolves when all CLDR data have loaded for the specified locale. All [`Observers`](https://github.com/dojo/shim) registered with `observeLocale` will be notified of locale changes, or notified of errors if the associated CLDR data could not be loaded (no `complete` method is currently used when switching locales).
 
 ```typescript
-import i18n, { observeLocale, switchLocale } from 'dojo-i18n/i18n';
+import i18n, { observeLocale, switchLocale } from '@dojo/i18n/i18n';
 import bundle from 'nls/bundle';
 
 // Register an `Observable`
@@ -123,10 +123,10 @@ switchLocale('de').then(() => {
 
 ### Loading CLDR data
 
-Since `dojo-i18n` automatically loads all CLDR data for the root locale, the CLDR JSON files need to be loaded manually only for additional locales used in isolated components (e.g., widgets). To load additional files manually, use the `loadCldrData` method exported by `dojo-i18n/cldr/load`:
+Since `@dojo/i18n` automatically loads all CLDR data for the root locale, the CLDR JSON files need to be loaded manually only for additional locales used in isolated components (e.g., widgets). To load additional files manually, use the `loadCldrData` method exported by `@dojo/i18n/cldr/load`:
 
 ```
-import loadCldrData, { CldrDataResponse } from 'dojo-i18n/cldr/load';
+import loadCldrData, { CldrDataResponse } from '@dojo/i18n/cldr/load';
 
 // Load data for a single locale:
 loadCldrData('ar-IQ').then((data: CldrDataResponse) => {
@@ -154,7 +154,7 @@ loadCldrData('made-UP').catch((error: Error) => {
 `switchLocale` handles loading data for new locales, but when first starting the i18n ecosystem, either `switchLocale(defaultLocale)` or the `ready` method can be used:
 
 ```typescript
-import { ready } from 'dojo-i18n/i18n';
+import { ready } from '@dojo/i18n/i18n';
 
 ready().then(() => {
 	// All CLDR data have been loaded for the root locale.
@@ -163,7 +163,7 @@ ready().then(() => {
 
 ### Custom message formatting (e.g., pluralization)
 
-`dojo-i18n` relies on [Globalize.js](https://github.com/jquery/globalize/blob/master/doc/api/message/message-formatter.md) for [ICU message formatting](http://userguide.icu-project.org/formatparse/messages), and as such all of the features offered by Globalize.js are available through `dojo-i18n`. The `i18n` module exposes two methods that handle message formatting: 1) `formatMessage`, which directly returns a formatted message based on its inputs, and 2) `getMessageFormatter`, which returns a method dedicated to formatting a single message.
+`@dojo/i18n` relies on [Globalize.js](https://github.com/jquery/globalize/blob/master/doc/api/message/message-formatter.md) for [ICU message formatting](http://userguide.icu-project.org/formatparse/messages), and as such all of the features offered by Globalize.js are available through `@dojo/i18n`. The `i18n` module exposes two methods that handle message formatting: 1) `formatMessage`, which directly returns a formatted message based on its inputs, and 2) `getMessageFormatter`, which returns a method dedicated to formatting a single message.
 
 As an example, suppose there is a locale bundle with a `guestInfo` message:
 
@@ -194,10 +194,10 @@ export default messages;
 
 The above message can be converted directly with `formatMessage`, or `getMessageFormatter` can be used to generate a function that can be used over and over with different options. Note that the formatters created and used by both methods are cached, so there is no performance penalty from compiling the same message multiple times.
 
-Since the Globalize.js formatting methods use message paths rather than the message strings themselves, the `dojo-i18n` methods also require both the bundle path and the message key, which will be resolved to a message path. If an optional locale is provided, then the corresponding locale-specific message will be used. Otherwise, the current locale is assumed.
+Since the Globalize.js formatting methods use message paths rather than the message strings themselves, the `@dojo/i18n` methods also require both the bundle path and the message key, which will be resolved to a message path. If an optional locale is provided, then the corresponding locale-specific message will be used. Otherwise, the current locale is assumed.
 
 ```typescript
-import i18n, { formatMessage, getMessageFormatter } from 'dojo-i18n/i18n';
+import i18n, { formatMessage, getMessageFormatter } from '@dojo/i18n/i18n';
 import bundle from 'nls/main';
 
 // 1. Load the messages for the locale.
@@ -302,15 +302,15 @@ formatUnit(1000, 'meter', null, 'fr); // 1 000 mètres'
 The easiest way to use this package is to install it via npm:
 
 ```
-$ npm install dojo-i18n
+$ npm install @dojo/i18n
 ```
 
 In addition, you can clone this repository and use the Grunt build scripts to manage the package.
 
-Using under TypeScript or ES6 modules, you would generally want to just import the dojo-i18n/i18n module:
+Using under TypeScript or ES6 modules, you would generally want to just import the @dojo/i18n/i18n module:
 
 ```typescript
-import i18n, { Messages } from 'dojo-i18n/i18n';
+import i18n, { Messages } from '@dojo/i18n/i18n';
 import messageBundle from 'path/to/bundle';
 
 i18n(messageBundle, 'fr').then((messages: Messages) => {
