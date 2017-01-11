@@ -3,7 +3,7 @@ import createEvented from '@dojo/compose/bases/createEvented';
 import has from '@dojo/core/has';
 import global from '@dojo/core/global';
 import { assign } from '@dojo/core/lang';
-import load from '@dojo/core/load';
+import load, { useDefault } from '@dojo/core/load';
 import { Handle } from '@dojo/interfaces/core';
 import Map from '@dojo/shim/Map';
 import Observable, { Observer, Subscription, SubscriptionObserver } from '@dojo/shim/Observable';
@@ -74,16 +74,8 @@ let rootLocale: string;
  * Load the specified locale-specific bundles, mapping the default exports to simple `Messages` objects.
  */
 const loadLocaleBundles = (function () {
-	function mapMessages<T extends Messages>(modules: LocaleModule<T>[]): T[] {
-		return modules.map((localeModule: LocaleModule<T>): T => {
-			return localeModule.default as T;
-		});
-	}
-
 	return function<T extends Messages>(paths: string[]): Promise<T[]> {
-		return load(<any> require, ...paths).then((modules: LocaleModule<T>[]) => {
-			return mapMessages(modules);
-		});
+		return load(<any> require, ...paths).then(modules => useDefault(modules));
 	};
 })();
 
