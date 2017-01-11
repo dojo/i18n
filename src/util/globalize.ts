@@ -7,7 +7,7 @@ import i18n from '../i18n';
  * `unit` properties for use with the various Globalize.js formatter methods.
  *
  * @param args
- * An array of two to four arguments.
+ * An object with an optional locale, options, value, and/or unit.
  *
  * @return
  * The normalized object map.
@@ -54,19 +54,10 @@ export default function getGlobalize(locale?: string) {
  * @param method
  * The name of the static method on the `Globalize` object (required).
  *
- * @param value
- * An optional value to pass to the underlying Globalize.js method.
+ * @param args
+ * An object containing any locale, options, value, or unit required by the underlying Globalize.js method.
  *
- * @param unit
- * An optional unit to pass to the underlying Globalize.js method.
- *
- * @param optionsOrLocale
- * An optional locale string or options value.
- *
- * @param locale
- * An optional locale, used when `optionsOrLocale` is an options value.
- *
- * @param
+ * @return]
  * The value returned by the underlying Globalize.js method.
  */
 export function globalizeDelegator<O, R>(method: string, args: DelegatorOptions<O>): R;
