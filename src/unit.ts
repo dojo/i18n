@@ -17,8 +17,6 @@ export type UnitFormatterOptions = {
 	numberFormatter?: NumberFormatterOptions;
 }
 
-export type UnitLength = 'long' | 'narrow' | 'short';
-
 /**
  * Return a string formatted for the specified number, unit, and options/locale.
  *

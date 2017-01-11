@@ -52,8 +52,6 @@ export type RelativeTimeFormatterOptions = {
 	form?: RelativeTimeLength;
 }
 
-export type RelativeTimeLength = 'short' | 'narrow';
-
 /**
  * Format a date according to the specified options for the specified or current locale.
  *
