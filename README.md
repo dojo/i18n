@@ -228,16 +228,16 @@ i18n(bundle, 'en').then(() => {
 
 ### Date and number formatting.
 
-As with the message formatting capabilities, `dojo-i18n` relies on Globalize.js to provide locale-specific formatting for dates, times, currencies, numbers, and units. The formatters themselves are essentially light wrappers around their Globalize.js counterparts, which helps maintain consistency with the Dojo 2 ecosystem and prevents the need to work with the `Globalize` object directly. Unlike the message formatters, the date, number, and unit formatters are not cached, as they have a more complex set of options. As such, executing the various "get formatter" methods multiple times with the same inputs does not return the exact same function object.
+As with the message formatting capabilities, `@dojo/i18n` relies on Globalize.js to provide locale-specific formatting for dates, times, currencies, numbers, and units. The formatters themselves are essentially light wrappers around their Globalize.js counterparts, which helps maintain consistency with the Dojo 2 ecosystem and prevents the need to work with the `Globalize` object directly. Unlike the message formatters, the date, number, and unit formatters are not cached, as they have a more complex set of options. As such, executing the various "get formatter" methods multiple times with the same inputs does not return the exact same function object.
 
-`dojo-i18n` groups the various formatters accordingly: date and time formatters (`dojo-i18n/date`); number, currency, and pluralization formatters (`dojo-i18n/number`); and unit formatters (`dojo-i18n/unit`). Each method corresponds to a Globalize.js method (see below), and each method follows the same basic format: the last argument is an optional locale, and the penultimate argument is the method options. If specifying a locale but no options, pass `null` as the `options` argument. If no locale is provided, then the current (`i18n.locale`) is assumed.
+`@dojo/i18n` groups the various formatters accordingly: date and time formatters (`@dojo/i18n/date`); number, currency, and pluralization formatters (`@dojo/i18n/number`); and unit formatters (`@dojo/i18n/unit`). Each method corresponds to a Globalize.js method (see below), and each method follows the same basic format: the last argument is an optional locale, and the penultimate argument is the method options. If specifying a locale but no options, pass `null` as the `options` argument. If no locale is provided, then the current (`i18n.locale`) is assumed.
 
 **Note**: for convenience, these methods are synchronous, but require that all CLDR data have been loaded (see above under "Loading CLDR data").
 
 ```typescript
-import { formatDate, getDateFormatter, formatRelativeTime } from 'dojo-i18n/date';
-import { formatCurrency, getCurrencyFormatter } from 'dojo-i18n/number';
-import { formatUnit, getUnitFormatter } from 'dojo-i18n/unit';
+import { formatDate, getDateFormatter, formatRelativeTime } from '@dojo/i18n/date';
+import { formatCurrency, getCurrencyFormatter } from '@dojo/i18n/number';
+import { formatUnit, getUnitFormatter } from '@dojo/i18n/unit';
 
 const date = new Date(1815, 11, 10, 11, 27);
 
@@ -272,7 +272,7 @@ frUnitFormatter(1000); // 1 000 mètres'
 formatUnit(1000, 'meter', null, 'fr); // 1 000 mètres'
 ```
 
-**`dojo-i18n/date` methods:**
+**`@dojo/i18n/date` methods:**
 
 - `formatDate` => [`Globalize.formatDate`](https://github.com/globalizejs/globalize/blob/master/doc/api/date/date-formatter.md)
 - `formatRelativeTime` => [`Globalize.formatRelativeTime`](https://github.com/globalizejs/globalize/blob/master/doc/api/relative-time/relative-time-formatter.md)
@@ -281,7 +281,7 @@ formatUnit(1000, 'meter', null, 'fr); // 1 000 mètres'
 - `getRelativeTimeFormatter` => [`Globalize.relativeTimeFormatter`](https://github.com/globalizejs/globalize/blob/master/doc/api/relative-time/relative-time-formatter.md)
 - `parseDate` => [`Globalize.parseDate`](https://github.com/globalizejs/globalize/blob/master/doc/api/date/date-parser.md)
 
-**`dojo-i18n/number` methods:**
+**`@dojo/i18n/number` methods:**
 
 - `formatCurrency` => [`Globalize.formatCurrency`](https://github.com/globalizejs/globalize/blob/master/doc/api/currency/currency-formatter.md)
 - `formatNumber` => [`Globalize.formatNumber`](https://github.com/globalizejs/globalize/blob/master/doc/api/number/number-formatter.md)
@@ -292,7 +292,7 @@ formatUnit(1000, 'meter', null, 'fr); // 1 000 mètres'
 - `parseNumber` => [`Globalize.parseNumber`](https://github.com/globalizejs/globalize/blob/master/doc/api/number/number-parser.md)
 - `pluralize` => [`Globalize.plural`](https://github.com/globalizejs/globalize/blob/master/doc/api/plural/plural-generator.md)
 
-**`dojo-i18n/number` methods:**
+**`@dojo/i18n/number` methods:**
 
 - `formatUnit` => [`Globalize.formatUnit`](https://github.com/globalizejs/globalize/blob/master/doc/api/unit/unit-formatter.md)
 - `getUnitFormatter` => [`Globalize.unitFormatter`](https://github.com/globalizejs/globalize/blob/master/doc/api/unit/unit-formatter.md)
