@@ -1,6 +1,5 @@
 import global from '@dojo/core/global';
 import has from '@dojo/core/has';
-import Promise from '@dojo/shim/Promise';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
@@ -12,7 +11,6 @@ import i18n, {
 	invalidate,
 	Messages,
 	observeLocale,
-	ready,
 	switchLocale,
 	systemLocale
 } from '../../src/i18n';
@@ -29,7 +27,7 @@ registerSuite({
 		}
 
 		invalidate();
-		return switchLocale(systemLocale);
+		switchLocale(systemLocale);
 	},
 
 	systemLocale() {
@@ -293,74 +291,43 @@ registerSuite({
 	},
 
 	observeLocale: {
-		'assert observer notified of error'() {
-			const onError = sinon.spy();
-			const subscription = observeLocale({ error: onError });
-			sinon.stub(cldrLoad, 'default').returns(Promise.reject(new Error('locale switch failure.')));
-
-			return switchLocale('ar').then(() => {
-				subscription.unsubscribe();
-				assert.isTrue(onError.called, '`observer.error` called with error object.');
-			});
-		},
-
 		'assert observer notified of locale change'() {
 			const next = sinon.spy();
 			const subscription = observeLocale({ next });
 
-			return switchLocale('ar').then(() => {
-				subscription.unsubscribe();
-				assert.isTrue(next.calledWith('ar'), '`observer.next` called with new locale.');
-			});
+			switchLocale('ar');
+			subscription.unsubscribe();
+
+			assert.isTrue(next.calledWith('ar'), '`observer.next` called with new locale.');
 		},
 
 		'assert observer not notified after unsubscribe'() {
-			const observer = { error: sinon.spy(), next: sinon.spy() };
+			const observer = { next: sinon.spy() };
 			const subscription = observeLocale(observer);
+
 			subscription.unsubscribe();
+			switchLocale('ar');
 
-			return switchLocale('ar').then(() => {
-				assert.isFalse(observer.next.called, '`observer.next` not called after unsubscribe.');
-
-				sinon.stub(cldrLoad, 'default').returns(Promise.reject(new Error('locale switch failure.')));
-				return switchLocale('ar-JO');
-			}).then(() => {
-				assert.isFalse(observer.error.called, '`observer.error` not called after unsubscribe.');
-			});
+			assert.isFalse(observer.next.called, '`observer.next` not called after unsubscribe.');
 		}
 	},
 
-	ready() {
-		assert.isFunction(ready().then, 'Returns a promise.');
-	},
-
 	switchLocale: {
-		'assert locale updated on success'() {
-			return switchLocale('en').then(() => {
-				return switchLocale('ar');
-			}).then(() => {
-				assert.strictEqual(i18n.locale, 'ar');
-			});
-		},
+		'assert root locale updated'() {
+			switchLocale('en');
+			switchLocale('ar');
 
-		'assert locale not updated on error'() {
-			return switchLocale('en').then(() => {
-				sinon.stub(cldrLoad, 'default').returns(Promise.reject(new Error('locale switch error')));
-				return switchLocale('ar');
-			}).then(() => {
-				assert.strictEqual(i18n.locale, 'en', 'Root locale not changed.');
-			});
+			assert.strictEqual(i18n.locale, 'ar');
 		},
 
 		'assert observers not updated when locale remains the same'() {
 			const next = sinon.spy();
 			observeLocale({ next });
 
-			return switchLocale('ar').then(() => {
-				return switchLocale('ar');
-			}).then(() => {
-				assert.isFalse(next.calledTwice);
-			});
+			switchLocale('ar');
+			switchLocale('ar');
+
+			assert.isFalse(next.calledTwice);
 		}
 	},
 
@@ -370,9 +337,8 @@ registerSuite({
 		},
 
 		'assert reflects current locale'() {
-			return switchLocale('fr').then(() => {
-				assert.strictEqual(i18n.locale, 'fr', '`i18n.locale` is the current locale.');
-			});
+			switchLocale('fr');
+			assert.strictEqual(i18n.locale, 'fr', '`i18n.locale` is the current locale.');
 		}
 	}
 });
