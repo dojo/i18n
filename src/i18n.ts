@@ -1,5 +1,6 @@
 /* tslint:disable:interface-name */
-import createEvented from '@dojo/compose/bases/createEvented';
+import eventedMixin from '@dojo/compose/bases/eventedMixin';
+import compose from '@dojo/compose/compose';
 import has from '@dojo/core/has';
 import global from '@dojo/core/global';
 import { assign } from '@dojo/core/lang';
@@ -66,7 +67,7 @@ const PATH_SEPARATOR: string = has('host-node') ? require('path').sep : '/';
 const VALID_PATH_PATTERN = new RegExp(`\\${PATH_SEPARATOR}[^\\${PATH_SEPARATOR}]+\$`);
 const bundleMap = new Map<string, Map<string, Messages>>();
 const formatterMap = new Map<string, MessageFormatter>();
-const localeProducer = createEvented();
+const localeProducer = compose({}).mixin(eventedMixin)();
 let rootLocale: string;
 
 /**

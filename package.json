@@ -18,7 +18,7 @@
     "test": "grunt test"
   },
   "peerDependencies": {
-    "@dojo/compose": "2.0.0-beta.21",
+    "@dojo/compose": "2.0.0-beta.23",
     "@dojo/core": "2.0.0-alpha.20",
     "@dojo/has": "2.0.0-alpha.7",
     "@dojo/shim": "2.0.0-beta.8"
