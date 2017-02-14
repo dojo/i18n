@@ -1,14 +1,26 @@
 // required for Globalize/Cldr to properly resolve locales in the browser.
 import 'cldrjs/dist/cldr/unresolved';
+import load from '@dojo/core/load';
+import coreRequest from '@dojo/core/request';
+import { Provider } from '@dojo/core/request/interfaces';
+import has from '@dojo/has/has';
 import { Require } from '@dojo/interfaces/loader';
 import Map from '@dojo/shim/Map';
-import load from '@dojo/core/load';
-import coreRequest, { Response } from '@dojo/core/request';
-import has from '@dojo/has/has';
 import Promise from '@dojo/shim/Promise';
 import * as Globalize from 'globalize';
-import supportedMain from './locales';
 import { generateLocales } from '../util/main';
+import supportedMain from './locales';
+
+let requestProvider: Provider;
+
+if (!has('host-browser')) {
+	requestProvider = (<any> require('@dojo/core/request/providers/node')).default;
+}
+else {
+	requestProvider = (<any> require('@dojo/core/request/providers/xhr')).default;
+}
+
+coreRequest.setDefaultProvider(requestProvider);
 
 declare const require: Require;
 declare const define: {
@@ -84,9 +96,11 @@ const getJson: (paths: ReadonlyArray<string>) => Promise<CldrData[]> = (function
 				path = require.toUrl(path);
 			}
 
-			return <Promise<CldrData>> coreRequest.get(`${path}.json`, {
-				responseType: 'json'
-			}).then((response: Response<CldrData>) => response.data as CldrData);
+			return <Promise<CldrData>> coreRequest.get(`${path}.json`)
+				.then(response => response.json())
+				.then((data: CldrData) => {
+					return data;
+				});
 		}));
 	};
 })();
