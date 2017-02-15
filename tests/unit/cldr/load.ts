@@ -1,4 +1,6 @@
+import load, { useDefault } from '@dojo/core/load';
 import coreRequest from '@dojo/core/request';
+import has from '@dojo/has/has';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
@@ -16,6 +18,12 @@ registerSuite({
 	loadCldrData: {
 		beforeEach() {
 			sinon.spy(request, 'get');
+
+			return load(has('host-browser') ? '@dojo/core/request/providers/xhr' : '@dojo/core/request/providers/node')
+				.then(useDefault)
+				.then(([ provider ]) => {
+					coreRequest.setDefaultProvider(provider);
+				});
 		},
 
 		afterEach() {

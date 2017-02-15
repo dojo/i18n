@@ -2,7 +2,6 @@
 import 'cldrjs/dist/cldr/unresolved';
 import load from '@dojo/core/load';
 import coreRequest from '@dojo/core/request';
-import { Provider } from '@dojo/core/request/interfaces';
 import has from '@dojo/has/has';
 import { Require } from '@dojo/interfaces/loader';
 import Map from '@dojo/shim/Map';
@@ -10,17 +9,6 @@ import Promise from '@dojo/shim/Promise';
 import * as Globalize from 'globalize';
 import { generateLocales } from '../util/main';
 import supportedMain from './locales';
-
-let requestProvider: Provider;
-
-if (!has('host-browser')) {
-	requestProvider = (<any> require('@dojo/core/request/providers/node')).default;
-}
-else {
-	requestProvider = (<any> require('@dojo/core/request/providers/xhr')).default;
-}
-
-coreRequest.setDefaultProvider(requestProvider);
 
 declare const require: Require;
 declare const define: {
