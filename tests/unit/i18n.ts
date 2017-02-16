@@ -1,8 +1,10 @@
 import global from '@dojo/core/global';
 import has from '@dojo/core/has';
+import * as Globalize from 'globalize';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
+import { fetchCldrData } from '../support/util';
 import * as cldrLoad from '../../src/cldr/load';
 import i18n, {
 	formatMessage,
@@ -328,6 +330,23 @@ registerSuite({
 			switchLocale('ar');
 
 			assert.isFalse(next.calledTwice);
+		},
+
+		'assert new locale passed to Globalize'() {
+			sinon.spy(Globalize, 'locale');
+
+			return fetchCldrData([ 'fr' ]).then(() => {
+				switchLocale('fr');
+				assert.isTrue((<any> Globalize).locale.calledWith('fr'), 'Locale should be passed to Globalize.');
+
+				cldrLoad.reset();
+				switchLocale('en');
+				assert.strictEqual((<any> Globalize).locale.callCount, 1, 'Locale should not be passed to Globalize.');
+				(<any> Globalize).locale.restore();
+			}, (error: Error) => {
+				(<any> Globalize).locale.restore();
+				throw error;
+			});
 		}
 	},
 

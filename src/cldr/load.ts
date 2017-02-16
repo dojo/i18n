@@ -76,16 +76,12 @@ function generateLocaleCache(cache: any, keys: ReadonlyArray<string>) {
 			return tree;
 		}
 
-		key = parts[0];
-		const subtree = tree[key] || Object.create(null);
-
-		parts.slice(1).reduce(function (subtree, key, i) {
-			if (typeof subtree[key] !== 'object') {
-				subtree[key] = i === parts.length - 1 ? false : Object.create(null);
+		parts.reduce((tree: any, key: string, i: number) => {
+			if (typeof tree[key] !== 'object') {
+				tree[key] = i === parts.length - 1 ? false : Object.create(null);
 			}
-			return subtree[key];
-		}, subtree);
-		tree[key] = subtree;
+			return tree[key];
+		}, tree);
 
 		return tree;
 	}, cache);
@@ -193,7 +189,7 @@ function registerMain(data?: LocaleData) {
 		return;
 	}
 
-	Object.keys(data).forEach(function (locale: string) {
+	Object.keys(data).forEach((locale: string) => {
 		if (supportedLocales.indexOf(locale) < 0) {
 			return;
 		}
