@@ -34,7 +34,7 @@ npm install @dojo/has
 npm install @dojo/shim
 ```
 
-Using under TypeScript or ES6 modules, you would generally want to just import the @dojo/i18n/i18n module:
+With TypeScript or ES6 modules, you would generally want to just import the @dojo/i18n/i18n module:
 
 ```typescript
 import i18n, { Messages } from '@dojo/i18n/i18n';
