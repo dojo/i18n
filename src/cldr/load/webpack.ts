@@ -31,8 +31,7 @@ export default function loadCldrData(data: CldrData | string[]): P<void> {
 	}
 
 	loadInjectedData();
-	baseLoad(data);
-	return P.resolve();
+	return baseLoad(data);
 }
 
 /**
