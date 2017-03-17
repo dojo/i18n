@@ -6,7 +6,7 @@ import baseLoad, {
 	mainPackages,
 	reset,
 	supplementalPackages
-} from '../load';
+} from './default';
 
 declare const __cldrData__: CldrData;
 
@@ -31,7 +31,8 @@ export default function loadCldrData(data: CldrData | string[]): P<void> {
 	}
 
 	loadInjectedData();
-	return baseLoad(data);
+	baseLoad(data);
+	return P.resolve();
 }
 
 /**
