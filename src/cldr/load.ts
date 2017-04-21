@@ -21,7 +21,7 @@ declare const require: Require;
  * Load the CLDR JSON files at the specified paths.
  *
  * @param require
- * An optional contextual require that can be used to resolve relative paths.
+ * The require method used to resolve relative paths.
  *
  * @param paths
  * The JSON paths.
