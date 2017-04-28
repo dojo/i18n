@@ -9,6 +9,7 @@ const basePath = hasHostNode ? `..${pathSeparator}_build${pathSeparator}` : '';
 const bundlePath = `${basePath}tests${pathSeparator}support${pathSeparator}mocks${pathSeparator}common${pathSeparator}party`;
 
 const messages = {
+	simpleGuestInfo: '{host} invites {guest} to a party.',
 	guestInfo: `{gender, select,
 		female {
 			{guestCount, plural, offset:1
