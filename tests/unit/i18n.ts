@@ -102,7 +102,7 @@ registerSuite({
 						host: 'Nita',
 						guestCount: 0
 					});
-					assert.strictEqual(formatted, 'Nita does not give a party.');
+					assert.strictEqual(formatted, 'Nita does not host a party.');
 
 					formatted = formatMessage(partyBundle.bundlePath, 'guestInfo', {
 						host: 'Nita',
@@ -231,7 +231,7 @@ registerSuite({
 						host: 'Nita',
 						guestCount: 0
 					});
-					assert.strictEqual(formatted, 'Nita does not give a party.');
+					assert.strictEqual(formatted, 'Nita does not host a party.');
 
 					formatted = formatter({
 						host: 'Nita',
