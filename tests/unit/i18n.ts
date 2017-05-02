@@ -87,6 +87,23 @@ registerSuite({
 				});
 			},
 
+			'assert dot notation tokens replaced'() {
+				return i18n(partyBundle).then(() => {
+					const formatted = formatMessage(partyBundle.bundlePath, 'simpleGuestInfoDotNotation', {
+						host: { name: 'Nita' },
+						guest: { name: 'Bryan' }
+					});
+					assert.strictEqual(formatted, 'Nita invites Bryan to a party.');
+
+					assert.throws(() => {
+						formatMessage(partyBundle.bundlePath, 'simpleGuestInfoDotNotation', {
+							host: { name: 'Nita' },
+							guest: {}
+						});
+					}, Error, 'Missing property guest.name');
+				});
+			},
+
 			'assert message without tokens'() {
 				return i18n(bundle).then(() => {
 					const formatted = formatMessage(bundle.bundlePath, 'hello');
