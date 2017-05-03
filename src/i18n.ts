@@ -353,7 +353,7 @@ export function getMessageFormatter(bundlePath: string, key: string, locale?: st
 	}
 
 	return function (options: FormatOptions = Object.create(null)) {
-		return (<Messages> messages)[key].replace(TOKEN_PATTERN, (token: string, property: string) => {
+		return messages[key].replace(TOKEN_PATTERN, (token: string, property: string) => {
 			const value = options[property];
 
 			if (typeof value === 'undefined') {
