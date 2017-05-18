@@ -70,7 +70,7 @@ export interface Messages {
 }
 
 const PATH_SEPARATOR: string = has('host-node') ? require('path').sep : '/';
-const TOKEN_PATTERN = /\{([a-z0-9_]+)\}/gi;
+const TOKEN_PATTERN = /\{([a-z0-9_\.]+)\}/gi;
 const VALID_PATH_PATTERN = new RegExp(`\\${PATH_SEPARATOR}[^\\${PATH_SEPARATOR}]+\$`);
 const bundleMap = new Map<string, Map<string, Messages>>();
 const formatterMap = new Map<string, MessageFormatter>();
@@ -354,7 +354,9 @@ export function getMessageFormatter(bundlePath: string, key: string, locale?: st
 
 	return function (options: FormatOptions = Object.create(null)) {
 		return messages[key].replace(TOKEN_PATTERN, (token: string, property: string) => {
-			const value = options[property];
+			const value = property.split('.').reduce((value: any, key: string) => {
+				return value && value[key];
+			}, options);
 
 			if (typeof value === 'undefined') {
 				throw new Error(`Missing property ${property}`);

@@ -10,6 +10,7 @@ const bundlePath = `${basePath}tests${pathSeparator}support${pathSeparator}mocks
 
 const messages = {
 	simpleGuestInfo: '{host} invites {guest} to a party.',
+	simpleGuestInfoDotNotation: '{host.name} invites {guest.name} to a party.',
 	guestInfo: `{gender, select,
 		female {
 			{guestCount, plural, offset:1

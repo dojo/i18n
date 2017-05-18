@@ -260,6 +260,18 @@ i18n(bundle, 'en').then(() => {
 });
 ```
 
+Alternatively, if the ICU message format is not being used, then dot notation can be used to extract values from objects:
+
+```typescript
+// Assume `guestInfo` is `{host.name} invites {guest.name} to the party.`
+const formatter = getMessageFormatter(bundle.bundlePath, 'guestInfo', 'en');
+let message = formatter({
+	host: { name: 'Margaret Mead' },
+	guest: { name: 'Laura Nader' }
+});
+console.log(message); // "Margaret Mead invites Laura Nader to the party."
+```
+
 #### ICU Message Formatting
 
 **Note**: This feature requires CLDR data (see above).
@@ -269,6 +281,7 @@ i18n(bundle, 'en').then(() => {
 As an example, suppose there is a locale bundle with a `guestInfo` message:
 
 ```typescript
+// Note that the ICU message format does not support dot notation.
 const messages = {
 	guestInfo: `{gender, select,
 		female {
