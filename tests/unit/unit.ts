@@ -6,14 +6,14 @@ import { getUnitFormatter, formatUnit } from '../../src/unit';
 import { switchLocale, systemLocale } from '../../src/i18n';
 
 registerSuite('number units', {
-	setup() {
+	before() {
 		// Load the CLDR data for the locales used in the tests ('en' and 'fr');
 		return fetchCldrData([ 'en', 'fr' ]).then(() => {
 			switchLocale('en');
 		});
 	},
 
-	teardown() {
+	after() {
 		return switchLocale(systemLocale);
 	},
 

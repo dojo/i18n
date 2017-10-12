@@ -18,7 +18,7 @@ let cldrData: CldrData | null;
 
 registerSuite('cldr/load/webpack', {
 
-	setup() {
+	before() {
 		cldrData = {
 			main: {
 				yue: {
@@ -37,7 +37,7 @@ registerSuite('cldr/load/webpack', {
 		reset();
 	},
 
-	teardown() {
+	after() {
 		cldrData = null;
 	},
 

@@ -23,7 +23,7 @@ import partyBundle from '../support/mocks/common/party';
 
 registerSuite('i18n', {
 
-	setup() {
+	before() {
 		// Load the CLDR data for the locales used in the tests ('en' and 'fr');
 		return fetchCldrData([ 'en', 'fr' ]).then(() => {
 			switchLocale('en');
@@ -58,12 +58,12 @@ registerSuite('i18n', {
 
 		formatMessage: {
 			'without CLDR data': {
-				setup() {
+				before() {
 					cldrLoad.reset();
 				},
 
-				teardown() {
-					return fetchCldrData([ 'en', 'fr' ]);
+				after() {
+					return <Promise<void>> fetchCldrData([ 'en', 'fr' ]);
 				},
 
 				tests: {
@@ -195,11 +195,11 @@ registerSuite('i18n', {
 
 		getMessageFormatter: {
 			'without CLDR data': {
-				setup() {
+				before() {
 					cldrLoad.reset();
 				},
 
-				teardown() {
+				after() {
 					return fetchCldrData([ 'en', 'fr' ]);
 				},
 

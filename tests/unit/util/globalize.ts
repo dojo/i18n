@@ -1,6 +1,7 @@
 import * as Globalize from 'globalize';
 import 'globalize/dist/globalize/date';
 import 'globalize/dist/globalize/relative-time';
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import { fetchCldrData } from '../../support/util';
@@ -10,13 +11,14 @@ import getGlobalize, { globalizeDelegator } from '../../../src/util/globalize';
 
 registerSuite('util/globalize', {
 
-	setup() {return fetchCldrData([ 'en', 'fr' ]).then(() => {
-		switchLocale('en');
+	before() {
+		return fetchCldrData([ 'en', 'fr' ]).then(() => {
+			switchLocale('en');
 			switchLocale('en');
 		});
 	},
 
-	teardown() {
+	after() {
 		switchLocale(systemLocale);
 	},
 
