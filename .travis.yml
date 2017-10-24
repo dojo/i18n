@@ -17,7 +17,7 @@ install:
 - travis_retry npm install
 script:
 - grunt
-- grunt intern:saucelabs
+- grunt intern:saucelabs --test-reporter
 - grunt uploadCoverage
 - grunt doc
 notifications:

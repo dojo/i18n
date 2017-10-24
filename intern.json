@@ -18,8 +18,7 @@
 				{ "name": "cldrjs", "location": "node_modules/cldrjs" },
 				{ "name": "@dojo", "location": "node_modules/@dojo" },
 				{ "name": "globalize", "location": "node_modules/globalize", "main": "dist/globalize" },
-				{ "name": "sinon", "location": "node_modules/sinon/pkg", "main": "sinon" },
-				{ "name": "grunt-dojo2", "location": "node_modules/grunt-dojo2" }
+				{ "name": "sinon", "location": "node_modules/sinon/pkg", "main": "sinon" }
 			],
 			"map": {
 				"globalize": {
@@ -31,25 +30,22 @@
 			}
 		}
 	},
+	"coverage": [
+		"./_build/src/**/*.js"
+	],
 	"configs": {
-		"coverage": {
-			"coverage": [
-				"./_build/src/**/*.js"
-			]
-		},
 		"remoteCapabilities": {
 			"project": "Dojo 2",
 			"name": "@dojo/i18n"
 		},
 		"local": {
-			"extends": [ "coverage" ],
 			"tunnel": "selenium",
 			"environments+": [
 				{ "browserName": "chrome" }
 			]
 		},
 		"browserstack": {
-			"extends": [ "coverage", "remoteCapabilities" ],
+			"extends": [ "remoteCapabilities" ],
 
 			"tunnel": "browserstack",
 			"capabilities+": {
@@ -66,7 +62,7 @@
 			]
 		},
 		"saucelabs": {
-			"extends": [ "coverage", "remoteCapabilities" ],
+			"extends": [ "remoteCapabilities" ],
 
 			"tunnel": "saucelabs",
 			"capabilities+": {
