@@ -1,4 +1,9 @@
 {
+	"capabilities": {
+		"project": "Dojo 2",
+		"name": "@dojo/i18n",
+		"browserstack.debug": false
+	},
 	"environments": [
 		{ "browserName": "node" }
 	],
@@ -34,10 +39,6 @@
 		"./_build/src/**/*.js"
 	],
 	"configs": {
-		"remoteCapabilities": {
-			"project": "Dojo 2",
-			"name": "@dojo/i18n"
-		},
 		"local": {
 			"tunnel": "selenium",
 			"environments+": [
@@ -45,30 +46,17 @@
 			]
 		},
 		"browserstack": {
-			"extends": [ "remoteCapabilities" ],
-
 			"tunnel": "browserstack",
-			"capabilities+": {
-				"browserstack.debug": false
-			},
 			"environments+": [
 				{ "browserName": "internet explorer", "version": "11" },
 				{ "browserName": "edge" },
 				{ "browserName": "firefox", "platform": "WINDOWS" },
 				{ "browserName": "chrome", "platform": "WINDOWS" },
 				{ "browserName": "safari", "version": "9.1", "platform": "MAC" }
-				// BrowserStack uses iOS 9.1 and some of the tests fail.  I looks like a missing locale problem
-				// { "browserName": "iPhone" }
 			]
 		},
 		"saucelabs": {
-			"extends": [ "remoteCapabilities" ],
-
 			"tunnel": "saucelabs",
-			"capabilities+": {
-				"fixSessionCapabilities": false
-			},
-
 			"defaultTimeout": 10000,
 			"environments+": [
 				{ "browserName": "internet explorer", "version": [ "10.0", "11.0" ], "platform": "Windows 7" },
