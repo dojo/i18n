@@ -392,7 +392,7 @@ function i18n<T extends Messages>(bundle: Bundle<T>, locale?: string): Promise<T
 	}
 
 	const localePaths = resolveLocalePaths(path, currentLocale, locales);
-	return loadLocaleBundles(localePaths).then((bundles: T[]): T => {
+	return loadLocaleBundles<T>(localePaths).then((bundles: T[]): T => {
 		return bundles.reduce((previous: T, partial: T): T => {
 			const localeMessages: T = assign({}, previous, partial);
 			loadMessages(bundlePath, <T> Object.freeze(localeMessages), currentLocale);
