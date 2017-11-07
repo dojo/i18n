@@ -3,7 +3,7 @@ import Evented from '@dojo/core/Evented';
 import has from '@dojo/core/has';
 import { assign } from '@dojo/core/lang';
 import load, { useDefault } from '@dojo/core/load';
-import { Handle } from '@dojo/interfaces/core';
+import { Handle } from '@dojo/core/interfaces';
 import global from '@dojo/shim/global';
 import Map from '@dojo/shim/Map';
 import Observable, { Observer, Subscription, SubscriptionObserver } from '@dojo/shim/Observable';
