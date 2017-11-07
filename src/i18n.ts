@@ -74,7 +74,7 @@ const TOKEN_PATTERN = /\{([a-z0-9_]+)\}/gi;
 const VALID_PATH_PATTERN = new RegExp(`\\${PATH_SEPARATOR}[^\\${PATH_SEPARATOR}]+\$`);
 const bundleMap = new Map<string, Map<string, Messages>>();
 const formatterMap = new Map<string, MessageFormatter>();
-const localeProducer = new Evented({});
+const localeProducer = new Evented();
 let rootLocale: string;
 
 /**
