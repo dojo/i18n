@@ -128,13 +128,13 @@ function getIcuMessageFormatter(bundlePath: string, key: string, locale?: string
  * @private
  * Load the specified locale-specific bundles, mapping the default exports to simple `Messages` objects.
  */
-const loadLocaleBundles = (function () {
+const loadLocaleBundles = (function() {
 	function mapMessages<T extends Messages>(modules: LocaleModule<T>[]): T[] {
 		return modules.map((localeModule: LocaleModule<T>): T => useDefault(localeModule));
 	}
 
 	return function<T extends Messages>(paths: string[]): Promise<T[]> {
-		return load(<any> require, ...paths).then((modules: LocaleModule<T>[]) => {
+		return load(<any>require, ...paths).then((modules: LocaleModule<T>[]) => {
 			return mapMessages(modules);
 		});
 	};
@@ -179,7 +179,7 @@ function getSupportedLocales(locale: string, supported: string[] = []): string[]
  * An optional locale. If not specified, then it is assumed that the messages are the defaults for the given
  * bundle path.
  */
-function loadMessages<T extends Messages> (bundlePath: string, messages: T, locale: string = 'root') {
+function loadMessages<T extends Messages>(bundlePath: string, messages: T, locale: string = 'root') {
 	let cached = bundleMap.get(bundlePath);
 
 	if (!cached) {
@@ -233,7 +233,8 @@ function resolveLocalePaths<T extends Messages>(path: string, locale: string, su
  */
 function validatePath(path: string): void {
 	if (!VALID_PATH_PATTERN.test(path)) {
-		const message = 'Invalid i18n bundle path. Bundle maps must adhere to the format' +
+		const message =
+			'Invalid i18n bundle path. Bundle maps must adhere to the format' +
 			' "{basePath}{separator}{bundleName}" so that locale bundles can be resolved.';
 		throw new Error(message);
 	}
@@ -291,8 +292,7 @@ export function getCachedMessages<T extends Messages>(bundle: Bundle<T>, locale:
 
 	if (!cached) {
 		loadMessages(bundlePath, messages);
-	}
-	else {
+	} else {
 		const localeMessages = cached.get(locale);
 		if (localeMessages) {
 			return localeMessages as T;
@@ -344,13 +344,13 @@ export function getMessageFormatter(bundlePath: string, key: string, locale?: st
 	}
 
 	const cached = bundleMap.get(bundlePath);
-	const messages = cached ? (cached.get(locale || getRootLocale()) || cached.get('root')) : null;
+	const messages = cached ? cached.get(locale || getRootLocale()) || cached.get('root') : null;
 
 	if (!messages) {
 		throw new Error(`The bundle "${bundlePath}" has not been registered.`);
 	}
 
-	return function (options: FormatOptions = Object.create(null)) {
+	return function(options: FormatOptions = Object.create(null)) {
 		return messages[key].replace(TOKEN_PATTERN, (token: string, property: string) => {
 			const value = options[property];
 
@@ -381,8 +381,7 @@ function i18n<T extends Messages>(bundle: Bundle<T>, locale?: string): Promise<T
 
 	try {
 		validatePath(path);
-	}
-	catch (error) {
+	} catch (error) {
 		return Promise.reject(error);
 	}
 
@@ -395,7 +394,7 @@ function i18n<T extends Messages>(bundle: Bundle<T>, locale?: string): Promise<T
 	return loadLocaleBundles<T>(localePaths).then((bundles: T[]): T => {
 		return bundles.reduce((previous: T, partial: T): T => {
 			const localeMessages: T = assign({}, previous, partial);
-			loadMessages(bundlePath, <T> Object.freeze(localeMessages), currentLocale);
+			loadMessages(bundlePath, <T>Object.freeze(localeMessages), currentLocale);
 			return localeMessages;
 		}, messages);
 	});
@@ -417,8 +416,7 @@ export default i18n as I18n<Messages>;
 export function invalidate(bundlePath?: string) {
 	if (bundlePath) {
 		bundleMap.delete(bundlePath);
-	}
-	else {
+	} else {
 		bundleMap.clear();
 	}
 }
@@ -433,7 +431,7 @@ export function invalidate(bundlePath?: string) {
  * @return
  * A subscription object that can be used to unsubscribe from updates.
  */
-export const observeLocale = (function () {
+export const observeLocale = (function() {
 	const localeSource = new Observable<string>((observer: SubscriptionObserver<string>) => {
 		const handles: Handle[] = [
 			localeProducer.on('change', (event: any) => {
@@ -441,14 +439,14 @@ export const observeLocale = (function () {
 			})
 		];
 
-		return function () {
+		return function() {
 			handles.forEach((handle: Handle) => {
 				handle.destroy();
 			});
 		};
 	});
 
-	return function (observer: Observer<string>): Subscription {
+	return function(observer: Observer<string>): Subscription {
 		return localeSource.subscribe(observer);
 	};
 })();
@@ -467,7 +465,7 @@ export const observeLocale = (function () {
  */
 export function setLocaleMessages<T extends Messages>(bundle: Bundle<T>, localeMessages: T, locale: string): void {
 	const messages: T = assign({}, bundle.messages, localeMessages);
-	loadMessages(bundle.bundlePath, <T> Object.freeze(messages), locale);
+	loadMessages(bundle.bundlePath, <T>Object.freeze(messages), locale);
 }
 
 /**
@@ -501,13 +499,12 @@ export function switchLocale(locale: string): void {
  * format when loading message bundles, this value represents the unaltered
  * locale returned directly by the environment.
  */
-export const systemLocale: string = (function () {
+export const systemLocale: string = (function() {
 	let systemLocale = 'en';
 	if (has('host-browser')) {
 		const navigator = global.navigator;
 		systemLocale = navigator.language || navigator.userLanguage;
-	}
-	else if (has('host-node')) {
+	} else if (has('host-node')) {
 		systemLocale = process.env.LANG || systemLocale;
 	}
 	return normalizeLocale(systemLocale);

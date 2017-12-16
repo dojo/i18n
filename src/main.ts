@@ -42,16 +42,8 @@ import {
 	PluralTypeOption,
 	RoundNumberOption
 } from './number';
-import {
-	formatUnit,
-	getUnitFormatter,
-	UnitFormatterOptions,
-	UnitLength
-} from './unit';
-import {
-	generateLocales,
-	normalizeLocale
-} from './util/main';
+import { formatUnit, getUnitFormatter, UnitFormatterOptions, UnitLength } from './unit';
+import { generateLocales, normalizeLocale } from './util/main';
 import loadCldrData from './cldr/load';
 
 export default i18n;

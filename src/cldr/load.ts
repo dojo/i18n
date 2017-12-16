@@ -28,25 +28,28 @@ declare const require: Require;
  * @return
  * A promise to the CLDR data for each path.
  */
-const getJson: (require: any, paths: string[]) => Promise<CldrData[]> = (function () {
+const getJson: (require: any, paths: string[]) => Promise<CldrData[]> = (function() {
 	if (has('host-node')) {
-		return function (require: any, paths: string[]): Promise<{}[]> {
+		return function(require: any, paths: string[]): Promise<{}[]> {
 			return load(require, ...paths);
 		};
 	}
 
-	return function (require: any, paths: string[]): Promise<CldrData[]> {
-		return Promise.all(paths.map((path: string): Promise<CldrData> => {
-			if (typeof require.toUrl === 'function') {
-				path = require.toUrl(path);
-			}
+	return function(require: any, paths: string[]): Promise<CldrData[]> {
+		return Promise.all(
+			paths.map((path: string): Promise<CldrData> => {
+				if (typeof require.toUrl === 'function') {
+					path = require.toUrl(path);
+				}
 
-			return <Promise<CldrData>> coreRequest.get(path)
-				.then(response => response.json())
-				.then((data: CldrData) => {
-					return data;
-				});
-		}));
+				return <Promise<CldrData>>coreRequest
+					.get(path)
+					.then((response) => response.json())
+					.then((data: CldrData) => {
+						return data;
+					});
+			})
+		);
 	};
 })();
 
@@ -65,7 +68,10 @@ const getJson: (require: any, paths: string[]) => Promise<CldrData[]> = (functio
  */
 export default function loadCldrData(contextRequire: Function, data: CldrData | string[]): Promise<void>;
 export default function loadCldrData(data: CldrData | string[]): Promise<void>;
-export default function loadCldrData(dataOrRequire: Function | CldrData | string[], data?: CldrData | string[]): Promise<void> {
+export default function loadCldrData(
+	dataOrRequire: Function | CldrData | string[],
+	data?: CldrData | string[]
+): Promise<void> {
 	const contextRequire = typeof dataOrRequire === 'function' ? dataOrRequire : require;
 	data = typeof dataOrRequire === 'function' ? data : dataOrRequire;
 
@@ -78,12 +84,4 @@ export default function loadCldrData(dataOrRequire: Function | CldrData | string
 	return baseLoad(data as CldrData);
 }
 
-export {
-	CldrData,
-	CldrGroup,
-	LocaleData,
-	isLoaded,
-	mainPackages,
-	reset,
-	supplementalPackages
-}
+export { CldrData, CldrGroup, LocaleData, isLoaded, mainPackages, reset, supplementalPackages };

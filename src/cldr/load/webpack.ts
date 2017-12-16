@@ -27,7 +27,10 @@ async function loadInjectedData() {
  */
 export default function loadCldrData(contextRequire: Function, data: CldrData | string[]): Promise<void>;
 export default function loadCldrData(data: CldrData | string[]): Promise<void>;
-export default function loadCldrData(dataOrRequire: Function | CldrData | string[], data?: CldrData | string[]): Promise<void> {
+export default function loadCldrData(
+	dataOrRequire: Function | CldrData | string[],
+	data?: CldrData | string[]
+): Promise<void> {
 	data = typeof dataOrRequire === 'function' ? data : dataOrRequire;
 
 	if (Array.isArray(data)) {
@@ -47,10 +50,4 @@ export function isLoaded(groupName: 'main' | 'supplemental', ...args: string[]) 
 	return baseIsLoaded(groupName, ...args);
 }
 
-export {
-	CldrData,
-	LocaleData,
-	mainPackages,
-	reset,
-	supplementalPackages
-}
+export { CldrData, LocaleData, mainPackages, reset, supplementalPackages };

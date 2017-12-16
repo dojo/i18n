@@ -8,11 +8,14 @@ export interface Thenable<T> {
 }
 
 export function isEventuallyRejected<T>(promise: Thenable<T>): Thenable<boolean> {
-	return promise.then<any>(function () {
-		throw new Error('unexpected code path');
-	}, function () {
-		return true; // expect rejection
-	});
+	return promise.then<any>(
+		function() {
+			throw new Error('unexpected code path');
+		},
+		function() {
+			return true; // expect rejection
+		}
+	);
 }
 
 export function throwImmediatly() {
@@ -23,15 +26,16 @@ export function throwImmediatly() {
  * Load into Globalize.js all CLDR data for the specified locales.
  */
 export async function fetchCldrData(locales: string | string[]): Promise<void> {
-	locales = Array.isArray(locales) ? locales : [ locales ];
+	locales = Array.isArray(locales) ? locales : [locales];
 
 	const promises = locales.map((locale: string) => {
 		if (isLoaded('main', locale)) {
 			return Promise.resolve();
 		}
 
-		const paths = [ 'ca-gregorian', 'currencies', 'dateFields', 'numbers', 'timeZoneNames', 'units' ]
-			.map((name: string) => `cldr-data/main/${locale}/${name}.json`);
+		const paths = ['ca-gregorian', 'currencies', 'dateFields', 'numbers', 'timeZoneNames', 'units'].map(
+			(name: string) => `cldr-data/main/${locale}/${name}.json`
+		);
 		return loadCldrData(paths);
 	});
 

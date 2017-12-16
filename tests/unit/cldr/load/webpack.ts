@@ -17,7 +17,6 @@ import {
 let cldrData: CldrData | null;
 
 registerSuite('cldr/load/webpack', {
-
 	before() {
 		cldrData = {
 			main: {
@@ -42,11 +41,14 @@ registerSuite('cldr/load/webpack', {
 	},
 
 	tests: {
-
 		api() {
 			assert.strictEqual(mainPackages, utilMainPackages, 'mainPackages should be re-exported');
 			assert.strictEqual(reset, utilReset, 'reset should be re-exported');
-			assert.strictEqual(supplementalPackages, utilSupplementalPackages, 'supplementalPackages should be re-exported');
+			assert.strictEqual(
+				supplementalPackages,
+				utilSupplementalPackages,
+				'supplementalPackages should be re-exported'
+			);
 		},
 
 		isLoaded() {
@@ -59,9 +61,8 @@ registerSuite('cldr/load/webpack', {
 
 		loadCldrData: {
 			'with a list of data URLs'() {
-				return loadCldrData([ 'cldr-data/supplemental/currencyData' ]).then(() => {
-					assert.isFalse(isLoaded('supplemental', 'currencyData'),
-						'The webpack load should ignore URLs.');
+				return loadCldrData(['cldr-data/supplemental/currencyData']).then(() => {
+					assert.isFalse(isLoaded('supplemental', 'currencyData'), 'The webpack load should ignore URLs.');
 				});
 			},
 
@@ -76,8 +77,7 @@ registerSuite('cldr/load/webpack', {
 			},
 
 			'with a require function'() {
-				return loadCldrData(() => {
-				}, {
+				return loadCldrData(() => {}, {
 					main: {
 						af: {}
 					}
