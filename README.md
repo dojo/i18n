@@ -18,6 +18,7 @@ An internationalization library that provides locale-specific message loading, a
   - [Date and number formatting](#date-and-number-formatting)
 - [How do I contribute?](#how-do-i-contribute)
   - [Installation](#installation)
+  - [Code Style](#code-style)
   - [Testing](#testing)
 - [Licensing information](#licensing-information)
 
