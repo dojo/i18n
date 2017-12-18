@@ -1,20 +1,13 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-import baseLoad, {
-	isLoaded,
-	mainPackages,
-	reset,
-	supplementalPackages
-} from '../../../../src/cldr/load/default';
+import baseLoad, { isLoaded, mainPackages, reset, supplementalPackages } from '../../../../src/cldr/load/default';
 
 registerSuite('cldr/load/default', {
-
 	afterEach() {
 		reset();
 	},
 
 	tests: {
-
 		mainPackages() {
 			assert.isTrue(Object.isFrozen(mainPackages), 'Should be frozen.');
 			assert.sameMembers(mainPackages as any[], [
@@ -110,7 +103,6 @@ registerSuite('cldr/load/default', {
 			},
 
 			tests: {
-
 				'main only'() {
 					reset('main');
 
@@ -118,7 +110,10 @@ registerSuite('cldr/load/default', {
 					assert.isFalse(isLoaded('main', 'zh-MO'), '"main" data should be cleared.');
 					assert.isFalse(isLoaded('main', 'zh', 'numbers'), '"main" data should be cleared.');
 
-					assert.isTrue(isLoaded('supplemental', 'likelySubtags'), '"supplemental" data should not be cleared.');
+					assert.isTrue(
+						isLoaded('supplemental', 'likelySubtags'),
+						'"supplemental" data should not be cleared.'
+					);
 				},
 
 				'supplemental only'() {

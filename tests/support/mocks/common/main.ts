@@ -1,10 +1,6 @@
 import has from '@dojo/core/has';
 
-const locales = [
-	'ar',
-	'ar-JO',
-	'es'
-];
+const locales = ['ar', 'ar-JO', 'es'];
 
 const hasHostNode = has('host-node');
 const pathSeparator = hasHostNode ? require('path').sep : '/';
