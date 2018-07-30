@@ -1,3 +1,9 @@
+## The `@dojo/i18n` repository has been deprecated and merged into [`@dojo/framework`](https://github.com/dojo/framework)
+
+You can read more about this change on our [blog](https://dojo.io/blog/). We will continue providing patches for `i18n` and other Dojo 2 repositories, and a [CLI migration tool](https://github.com/dojo/cli-upgrade) is available to aid in migrating projects from v2 to v3.
+
+***
+
 # @dojo/i18n
 
 [![Build Status](https://travis-ci.org/dojo/i18n.svg?branch=master)](https://travis-ci.org/dojo/i18n)
@@ -14,9 +20,6 @@ An internationalization library that provides locale-specific message loading, a
   - [Loading CLDR data](#loading-cldr-data)
   - [Message Formatting](#message-formatting)
   - [Date and number formatting](#date-and-number-formatting)
-- [How do I contribute?](#how-do-i-contribute)
-  - [Installation](#installation)
-  - [Testing](#testing)
 - [Licensing information](#licensing-information)
 
 ## Usage
@@ -400,32 +403,6 @@ formatUnit(1000, 'meter', null, 'fr); // 1 000 mètres'
 
 - `formatUnit` => [`Globalize.formatUnit`](https://github.com/globalizejs/globalize/blob/master/doc/api/unit/unit-formatter.md)
 - `getUnitFormatter` => [`Globalize.unitFormatter`](https://github.com/globalizejs/globalize/blob/master/doc/api/unit/unit-formatter.md)
-
-## How do I contribute?
-
-We appreciate your interest!  Please see the [Guidelines Repository](https://github.com/dojo/guidelines#readme) for the Contributing Guidelines.
-
-### Code Style
-
-This repository uses [`prettier`](https://prettier.io/) for code styling rules and formatting. A pre-commit hook is installed automatically and configured to run `prettier` against all staged files as per the configuration in the project's `package.json`.
-
-An additional npm script to run `prettier` (with write set to `true`) against all `src` and `test` project files is available by running:
-
-```bash
-npm run prettier
-```
-
-### Installation
-
-To start working with this package, clone the repository and run `npm install`.
-
-In order to build the project run `grunt dev` or `grunt dist`.
-
-### Testing
-
-Test cases MUST be written using Intern using the Object test interface and Assert assertion interface.
-
-90% branch coverage MUST be provided for all code submitted to this repository, as reported by istanbul’s combined coverage results for all supported platforms.
 
 ## Licensing information
 
